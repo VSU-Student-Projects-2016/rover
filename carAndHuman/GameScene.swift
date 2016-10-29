@@ -39,6 +39,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var camCar = true
     var speedCar: CGFloat = 0.0
     var distance = 0
+    var maxSpeed:CGFloat = 0.0
+    var f = true
     
     override func didMove(to view: SKView) {
         self.physicsWorld.gravity = CGVector(dx: 0.0, dy: -5.0)
@@ -47,6 +49,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         self.backgroundColor = SKColor.blue
         
         createGround()
+        spawnPipe(position: CGPoint(x: ground2.position.x + ground2.frame.size.width/2, y: ground2.position.y + ground2.frame.size.height))
+        spawnPipe(position: CGPoint(x: 8000, y: 50))
         
         myNewCar = Car()
         myNewCar.add(to: self)
@@ -67,23 +71,34 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         let groundPath = UIBezierPath()
         groundPath.move(to: CGPoint(x: -400, y: 0))
         groundPath.addLine(to: CGPoint(x: 600, y: 0))
-        groundPath.addLine(to: CGPoint(x: 1200, y: 600))
+        groundPath.addLine(to: CGPoint(x: 1200, y: 400))
         groundPath.addLine(to: CGPoint(x: 1200, y: 0))
         groundPath.addCurve(to: CGPoint(x: 8000,y: 0), controlPoint1: CGPoint(x: 3000,y: 300), controlPoint2: CGPoint(x: 4000, y: 0))
-        groundPath.addLine(to: CGPoint(x: 8000, y: 1000))
-        groundPath.addLine(to: CGPoint(x: 8000, y: 0))
         ground = SKShapeNode(path: groundPath.cgPath)
         ground.lineWidth = 2
         ground.fillColor = SKColor.orange
         ground.strokeColor = SKColor.orange
         ground.position = CGPoint(x: 0, y: 0)
-        
         ground.physicsBody = SKPhysicsBody(edgeChainFrom: groundPath.cgPath)
         ground.physicsBody?.isDynamic = false
         ground.physicsBody?.categoryBitMask = groundCategory
         ground.physicsBody?.collisionBitMask = headCategory | bodyCategory | armCategory | legCategory | carCategory | wheelCategory | springCategory
-        
+        ground.physicsBody?.friction = 200
         addChild(ground)
+        
+        ground2 = SKShapeNode(rectOf: CGSize(width: 2000, height: 100))
+        ground2.fillColor = SKColor.green
+        
+        ground2.physicsBody = SKPhysicsBody(rectangleOf: CGSize(width: 2000, height: 100))
+        ground2.physicsBody?.isDynamic = false
+        ground2.physicsBody?.categoryBitMask = groundCategory
+         ground.physicsBody?.collisionBitMask = headCategory | bodyCategory | armCategory | legCategory | carCategory | wheelCategory | springCategory
+        
+        ground2.position = CGPoint(x: 2500, y: 400)
+        
+        
+        addChild(ground2)
+        
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -102,31 +117,31 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         else{
             cam.position = myNewMan.arm1.position
         }
+        
         if isTouch && notContact{
-            speedCar = speedCar + 20
+            speedCar = speedCar + 50
             myNewCar.run(speed: speedCar)
+            //maxSpeed = speedCar
+            //f = true
         }
         else{
-            if speedCar > 0 && notContact{
-                speedCar = speedCar - 20
+            if f && speedCar > 0 && notContact{
+                speedCar = speedCar - 50
+                myNewCar.run(speed: 0)
+                
+                //f = false
             }
-            myNewCar.run(speed: speedCar)
-        }
-            if spawn{
-            spawnPipe()
-            spawnSaw()
-            spawnSpike()
-            spawn = false
+            
         }
     }
     
-    func spawnPipe(){
+    func spawnPipe(position: CGPoint){
         pipe = SKShapeNode(rectOf: CGSize(width: 100, height: 100))
         pipe.fillColor = SKColor.red
         pipe.physicsBody = SKPhysicsBody(rectangleOf: CGSize(width: 100, height: 100))
         pipe.physicsBody?.isDynamic = false
         pipe.physicsBody?.categoryBitMask = pipeCategory
-        pipe.position = CGPoint(x: myNewCar.bodyCar.position.x + self.frame.width, y: 100)
+        pipe.position = position
         addChild(pipe)
         
         
@@ -167,23 +182,23 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     func didBegin(_ contact: SKPhysicsContact) {
-        if contact.bodyA.categoryBitMask == pipeCategory || contact.bodyB.categoryBitMask == pipeCategory{
-            let impulse = speedCar
-            print(impulse)
-            notContact = false
-            speedCar = 0
-            myNewCar.run(speed: speedCar)
-            myNewCar.bodyCar.physicsBody?.applyImpulse(CGVector(dx: -impulse, dy: 100))
+        if notContact && (contact.bodyA.categoryBitMask == pipeCategory || contact.bodyB.categoryBitMask == pipeCategory){
+            if contact.collisionImpulse > 1800{
+                let impulse = speedCar
+                print(impulse)
+                print(contact.collisionImpulse)
+                notContact = false
+                speedCar = 0
+                myNewCar.run(speed: speedCar)
+                myNewCar.bodyCar.physicsBody?.applyImpulse(CGVector(dx: -impulse, dy: 100))
             
-            camCar = false
+                camCar = false
             
-            myNewMan = Human(pos: myNewCar.bodyCar.position)
-            myNewMan.add(to: self)
-            myNewMan.impulse(force: impulse/700)
+                myNewMan = Human(pos: myNewCar.bodyCar.position)
+                myNewMan.add(to: self)
+                myNewMan.impulse(force: impulse * 0.1)
             
-            
-            
-            
+            }
         }
     }
 }

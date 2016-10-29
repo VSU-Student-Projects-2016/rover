@@ -24,7 +24,7 @@ class Human: SKNode {
     var man2 = SKPhysicsJointFixed()
     var man3 = SKPhysicsJointFixed()
     var man4 = SKPhysicsJointFixed()
-    var man5 = SKPhysicsJointSpring()
+    var man5 = SKPhysicsJointPin()
     
     init (pos: CGPoint) {
         super.init()
@@ -91,7 +91,10 @@ class Human: SKNode {
         man2 = SKPhysicsJointFixed.joint(withBodyA: Circle2.physicsBody!, bodyB: leg2.physicsBody!, anchor: CGPoint(x: pos.x - 45, y: pos.y + 20))
         //let man3 = SKPhysicsJointFixed.joint(withBodyA: Circle2.physicsBody!, bodyB: arm1.physicsBody!, anchor: CGPoint(x: bird.position.x - 45, y: bird.position.y + 20))
         man4 = SKPhysicsJointFixed.joint(withBodyA: Circle2.physicsBody!, bodyB: arm2.physicsBody!, anchor: CGPoint(x: pos.x - 45, y: pos.y + 20))
-        man5 = SKPhysicsJointSpring.joint(withBodyA: Circle2.physicsBody!, bodyB: arm1.physicsBody!, anchorA: CGPoint(x: pos.x - 5 , y: pos.y + 5), anchorB: CGPoint(x: pos.x  , y: pos.y ))
+        man5 = SKPhysicsJointPin.joint(withBodyA: Circle2.physicsBody!, bodyB: arm1.physicsBody!, anchor: CGPoint(x: pos.x - 5 , y: pos.y + 5))
+        man5.shouldEnableLimits = true
+        man5.lowerAngleLimit = CGFloat(GLKMathDegreesToRadians(-90))
+        man5.upperAngleLimit = CGFloat(GLKMathDegreesToRadians(20))
     }
     
     func add(to scene: SKScene) {

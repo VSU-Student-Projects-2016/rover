@@ -42,10 +42,10 @@ class Car: SKNode{
         //bodyCar.physicsBody = SKPhysicsBody(rectangleOf: bodyCar.frame.size)
         bodyCar.physicsBody = SKPhysicsBody(texture: carTexture, size: CGSize(width: 300, height: 150))
         bodyCar.physicsBody?.categoryBitMask = carCategory
-        bodyCar.physicsBody?.collisionBitMask =  groundCategory
-        //bodyCar.physicsBody?.contactTestBitMask = pipeCategory
+        bodyCar.physicsBody?.collisionBitMask =  groundCategory | pipeCategory
+        bodyCar.physicsBody?.contactTestBitMask = pipeCategory
         bodyCar.physicsBody?.isDynamic = true
-        //bodyCar.physicsBody?.mass = 300
+       // bodyCar.physicsBody?.mass = 1
         
         addChild(bodyCar)
         
@@ -54,7 +54,9 @@ class Car: SKNode{
         circle1.physicsBody?.collisionBitMask =  groundCategory
         //circle1.physicsBody?.contactTestBitMask = carCategory
         circle1.physicsBody?.isDynamic = true
-        //circle1.physicsBody?.mass = 20
+        circle1.physicsBody?.mass = 5
+        circle1.physicsBody?.friction = 100
+        //circle1.physicsBody?.restitution = 2
         
         addChild(circle1)
         
@@ -63,7 +65,9 @@ class Car: SKNode{
         circle2.physicsBody?.collisionBitMask =  groundCategory
         //circle2.physicsBody?.contactTestBitMask = carCategory | groundCategory
         circle2.physicsBody?.isDynamic = true
-        //circle2.physicsBody?.mass = 200
+        circle2.physicsBody?.mass = 5
+       // circle2.physicsBody?.friction = 100
+       // circle2.physicsBody?.restitution = 2
         
         addChild(circle2)
         
@@ -122,9 +126,10 @@ class Car: SKNode{
     
     
     func run (speed: CGFloat){
-        circle1.physicsBody?.applyForce(CGVector(dx: speed * 0.5, dy: 0))
-        circle2.physicsBody?.applyForce(CGVector(dx: speed * 0.5, dy: 0))
-        //bodyCar.physicsBody?.velocity = CGVector(dx: speed, dy: 0)
+        circle1.physicsBody?.applyTorque(-speed * 0.001)
+        circle2.physicsBody?.applyTorque(-speed * 0.001)
+        //circle1.physicsBody?.velocity = CGVector(dx: speed, dy: 0)
+        //circle2.physicsBody?.velocity = CGVector(dx: speed, dy: 0)
     }
     
     required init?(coder aDecoder: NSCoder) {
