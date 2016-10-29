@@ -12,13 +12,16 @@ let carCategory: UInt32 = 1 << 0
 let groundCategory: UInt32 = 1 << 1
 let pipeCategory: UInt32 = 1 << 2
 let bodyCategory: UInt32 = 1 << 4
-let armCategory: UInt32 = 1 << 5
-let legCategory: UInt32 = 1 << 6
-let headCategory: UInt32 = 1 << 7
-let sawCategory: UInt32 = 1 << 8
-let spikeCategory: UInt32 = 1 << 9
-let wheelCategory: UInt32 = 1 << 10
-let springCategory: UInt32 = 1 << 11
+let arm1Category: UInt32 = 1 << 5
+let arm2Category: UInt32 = 1 << 6
+let leg1Category: UInt32 = 1 << 7
+let leg2Category: UInt32 = 1 << 8
+let headCategory: UInt32 = 1 << 9
+let sawCategory: UInt32 = 1 << 10
+let spikeCategory: UInt32 = 1 << 11
+let wheelCategory: UInt32 = 1 << 12
+let springCategory: UInt32 = 1 << 13
+
 
 
 class GameScene: SKScene, SKPhysicsContactDelegate {
@@ -32,6 +35,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var moveGround1: SKAction!
     var moveGround2: SKAction!
     var pipe: SKShapeNode!
+    //let saw = SKShapeNode()
     
     var isTouch = false
     var spawn = false
@@ -51,6 +55,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         createGround()
         spawnPipe(position: CGPoint(x: ground2.position.x + ground2.frame.size.width/2, y: ground2.position.y + ground2.frame.size.height))
         spawnPipe(position: CGPoint(x: 8000, y: 50))
+        spawnSaw(position: CGPoint(x: ground2.position.x + ground2.frame.size.width/2 + 400, y: ground2.position.y + ground2.frame.size.height + 350))
+        
         
         myNewCar = Car()
         myNewCar.add(to: self)
@@ -82,7 +88,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         ground.physicsBody = SKPhysicsBody(edgeChainFrom: groundPath.cgPath)
         ground.physicsBody?.isDynamic = false
         ground.physicsBody?.categoryBitMask = groundCategory
-        ground.physicsBody?.collisionBitMask = headCategory | bodyCategory | armCategory | legCategory | carCategory | wheelCategory | springCategory
+        ground.physicsBody?.collisionBitMask = headCategory | bodyCategory | arm1Category | leg1Category | carCategory | wheelCategory | springCategory
         ground.physicsBody?.friction = 200
         addChild(ground)
         
@@ -92,7 +98,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         ground2.physicsBody = SKPhysicsBody(rectangleOf: CGSize(width: 2000, height: 100))
         ground2.physicsBody?.isDynamic = false
         ground2.physicsBody?.categoryBitMask = groundCategory
-         ground.physicsBody?.collisionBitMask = headCategory | bodyCategory | armCategory | legCategory | carCategory | wheelCategory | springCategory
+         ground.physicsBody?.collisionBitMask = headCategory | bodyCategory | arm1Category | leg1Category | carCategory | wheelCategory | springCategory
         
         ground2.position = CGPoint(x: 2500, y: 400)
         
@@ -111,6 +117,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     
     override func update(_ currentTime: TimeInterval) {
+        
         if camCar{
             cam.position = myNewCar.circle2.position
         }
@@ -147,16 +154,26 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
     }
     
-    func spawnSaw()
+    func spawnSaw(position: CGPoint)
     {
-        let saw = SKShapeNode(circleOfRadius:40)
-        saw.physicsBody = SKPhysicsBody(circleOfRadius: 40)
+        let saw = SKShapeNode(circleOfRadius:100)
+        saw.physicsBody = SKPhysicsBody(circleOfRadius: 100)
         saw.fillColor = SKColor.black
         saw.physicsBody?.categoryBitMask = sawCategory
-        saw.physicsBody?.collisionBitMask =  bodyCategory | headCategory | armCategory | legCategory
+        saw.physicsBody?.collisionBitMask =  bodyCategory | headCategory | arm1Category | leg1Category
+        saw.physicsBody?.contactTestBitMask =  bodyCategory | headCategory | arm1Category | leg1Category | arm2Category | leg2Category
         saw.physicsBody?.isDynamic = false
-        saw.position = CGPoint(x: myNewCar.bodyCar.position.x + self.frame.width + 1000, y: 100)
+        saw.position = position
+        saw.physicsBody?.applyTorque(500)
+        saw.physicsBody?.friction = 100
+        saw.zPosition = 10
         addChild(saw)
+        
+        let center = SKShapeNode(rectOf: CGSize(width: 50, height: 50))
+        center.fillColor = SKColor.red
+        center.position = saw.position
+        center.zPosition = 15
+        saw.addChild(center)
         
     }
     
@@ -176,14 +193,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         spike.strokeColor = SKColor.gray
         spike.physicsBody = SKPhysicsBody.init(polygonFrom: spikePath.cgPath)
         spike.physicsBody?.categoryBitMask = spikeCategory
-        spike.physicsBody?.collisionBitMask =  bodyCategory | headCategory | armCategory | legCategory
+        spike.physicsBody?.collisionBitMask =  bodyCategory | headCategory | arm1Category | leg1Category
         
         addChild(spike)
     }
     
     func didBegin(_ contact: SKPhysicsContact) {
         if notContact && (contact.bodyA.categoryBitMask == pipeCategory || contact.bodyB.categoryBitMask == pipeCategory){
-            if contact.collisionImpulse > 1800{
+            if contact.collisionImpulse > 1400{
                 let impulse = speedCar
                 print(impulse)
                 print(contact.collisionImpulse)
@@ -196,8 +213,35 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             
                 myNewMan = Human(pos: myNewCar.bodyCar.position)
                 myNewMan.add(to: self)
-                myNewMan.impulse(force: impulse * 0.1)
+                myNewMan.impulse(force: contact.collisionImpulse * 0.002)
             
+            }
+        }
+        if contact.bodyA.categoryBitMask == sawCategory || contact.bodyB.categoryBitMask == sawCategory{
+            let manCategory: UInt32
+            if contact.bodyA.categoryBitMask != sawCategory{
+                manCategory = contact.bodyA.categoryBitMask
+            }
+            else{
+                manCategory = contact.bodyB.categoryBitMask
+            }
+            print(contact.collisionImpulse)
+            if contact.collisionImpulse > 60{
+                switch(manCategory){
+                case arm1Category:
+                    self.physicsWorld.remove(myNewMan.jointArm1)
+                    break
+                case arm2Category:
+                    self.physicsWorld.remove(myNewMan.jointArm2)
+                case leg1Category:
+                    self.physicsWorld.remove(myNewMan.jointLeg1)
+                case leg2Category:
+                    self.physicsWorld.remove(myNewMan.jointLeg2)
+                case headCategory:
+                    self.physicsWorld.remove(myNewMan.jointHead)
+                default:
+                    self.physicsWorld.remove(myNewMan.jointHead)
+                }
             }
         }
     }
