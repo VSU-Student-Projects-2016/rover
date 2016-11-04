@@ -248,6 +248,15 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 default:
                     self.physicsWorld.remove(myNewMan.jointHead)
                 }
+                let bloodMan = SKEmitterNode(fileNamed: "blood.sks")
+               // bloodMan?.physicsBody = SKPhysicsBody(rectangleOf: CGSize(width: 10, height: 10))
+                //let
+                bloodMan?.position = CGPoint(x: myNewMan.bodyMan.position.x - 10, y: myNewMan.bodyMan.position.y)
+                bloodMan?.setScale(0.6)
+                let waitAction = SKAction.wait(forDuration: 0.4)
+                addChild(bloodMan!)
+                bloodMan?.run(SKAction.sequence([waitAction, SKAction.removeFromParent()]))
+                
             }
         }
     }

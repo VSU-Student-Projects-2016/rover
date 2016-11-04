@@ -47,14 +47,17 @@ class Car: SKNode{
         bodyCar.physicsBody?.isDynamic = true
        // bodyCar.physicsBody?.mass = 1
         
+        
+        
         addChild(bodyCar)
+        
         
         circle1.physicsBody = SKPhysicsBody(circleOfRadius: 40)
         circle1.physicsBody?.categoryBitMask = wheelCategory
         circle1.physicsBody?.collisionBitMask =  groundCategory
         //circle1.physicsBody?.contactTestBitMask = carCategory
         circle1.physicsBody?.isDynamic = true
-        circle1.physicsBody?.mass = 5
+        circle1.physicsBody?.mass = 1
         circle1.physicsBody?.friction = 100
         //circle1.physicsBody?.restitution = 2
         
@@ -65,7 +68,7 @@ class Car: SKNode{
         circle2.physicsBody?.collisionBitMask =  groundCategory
         //circle2.physicsBody?.contactTestBitMask = carCategory | groundCategory
         circle2.physicsBody?.isDynamic = true
-        circle2.physicsBody?.mass = 5
+        circle2.physicsBody?.mass = 1
        // circle2.physicsBody?.friction = 100
        // circle2.physicsBody?.restitution = 2
         
@@ -114,6 +117,15 @@ class Car: SKNode{
         pinCircle2Spring.lowerDistanceLimit = -10
         pinCircle2Spring.upperDistanceLimit = 0
         
+        let exhaustPipe = SKShapeNode(rectOf: CGSize(width: 30, height: 10))
+        exhaustPipe.fillColor = SKColor.black
+        exhaustPipe.position = CGPoint(x: -150, y: -60)
+        let exhaust = SKEmitterNode(fileNamed: "smoke.sks")
+        exhaust?.position = CGPoint(x: -160, y: -60)
+        exhaust?.run(SKAction.rotate(byAngle: -30, duration: 0))
+        bodyCar.addChild(exhaust!)
+        bodyCar.addChild(exhaustPipe)
+        
         
         
         scene.physicsWorld.add(pinCircle1Spring)
@@ -121,6 +133,9 @@ class Car: SKNode{
         scene.physicsWorld.add(pinCircle1Pin)
         scene.physicsWorld.add(pinCircle2Pin)
         
+        print("body car \((bodyCar.physicsBody?.mass)!)")
+        print("circle1 \((circle1.physicsBody?.mass)!)")
+        print("circle2 \((circle2.physicsBody?.mass)!)")
         
     }
     
