@@ -29,7 +29,7 @@ class Car: SKNode{
     override init() {
         super.init()
         bodyCar = SKSpriteNode(imageNamed: "car")
-        bodyCar.zPosition = 0
+        bodyCar.zPosition = 1
         bodyCar.size = CGSize(width: 300, height: 150)
         circle1 = SKSpriteNode(imageNamed: "wheel")
         circle1.zPosition = 3

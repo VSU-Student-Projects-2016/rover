@@ -21,7 +21,7 @@ let sawCategory: UInt32 = 1 << 10
 let spikeCategory: UInt32 = 1 << 11
 let wheelCategory: UInt32 = 1 << 12
 let springCategory: UInt32 = 1 << 13
-
+let dsCategory: UInt32 = 1 << 14
 
 
 class GameScene: SKScene, SKPhysicsContactDelegate {
@@ -85,11 +85,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     func createGround()
     {
         let groundPath = UIBezierPath()
+        let widthGround:CGFloat = 8000
         groundPath.move(to: CGPoint(x: -400, y: 0))
         groundPath.addLine(to: CGPoint(x: 600, y: 0))
         groundPath.addLine(to: CGPoint(x: 1200, y: 400))
         groundPath.addLine(to: CGPoint(x: 1200, y: 0))
-        groundPath.addCurve(to: CGPoint(x: 8000,y: 0), controlPoint1: CGPoint(x: 3000,y: 300), controlPoint2: CGPoint(x: 4000, y: 0))
+        groundPath.addCurve(to: CGPoint(x: 8000,y: 0), controlPoint1: CGPoint(x: 3000,y: 300), controlPoint2: CGPoint(x: widthGround, y: 0))
         ground = SKShapeNode(path: groundPath.cgPath)
         ground.lineWidth = 2
         ground.fillColor = SKColor.orange
@@ -104,17 +105,23 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         ground2 = SKShapeNode(rectOf: CGSize(width: 2000, height: 100))
         ground2.fillColor = SKColor.green
-        
         ground2.physicsBody = SKPhysicsBody(rectangleOf: CGSize(width: 2000, height: 100))
         ground2.physicsBody?.isDynamic = false
         ground2.physicsBody?.categoryBitMask = groundCategory
          ground.physicsBody?.collisionBitMask = headCategory | bodyCategory | arm1Category | leg1Category | carCategory | wheelCategory | springCategory
-        
         ground2.position = CGPoint(x: 2500, y: 400)
-        
-        
         addChild(ground2)
         
+        var xDiamond: CGFloat = 0.0
+        while xDiamond < widthGround{
+            self.physicsWorld.enumerateBodies(alongRayStart: CGPoint(x: xDiamond, y: 800), end: CGPoint(x: xDiamond, y: 0)) { (b:SKPhysicsBody, position: CGPoint, vector: CGVector, boolPointer: UnsafeMutablePointer<ObjCBool>) in
+                if b.categoryBitMask == groundCategory{
+                    self.spawnDiamonds(pos: CGPoint(x: position.x, y: position.y + 100))
+                }
+            }
+            xDiamond = xDiamond + 300
+        }
+
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -127,6 +134,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     
     override func update(_ currentTime: TimeInterval) {
+        
         
         if camCar{
             cam.position = myNewCar.circle2.position
@@ -188,7 +196,35 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         addChild(spike)
     }
     
+    func spawnDiamonds(pos: CGPoint){
+        let diamondTexture = SKTexture(imageNamed: "diamond")
+        let diamond = SKSpriteNode(texture: diamondTexture)
+        diamond.physicsBody = SKPhysicsBody(texture: diamondTexture, size: diamondTexture.size())
+        diamond.physicsBody?.categoryBitMask = dsCategory
+        diamond.physicsBody?.isDynamic = false
+        diamond.physicsBody?.contactTestBitMask = carCategory
+        diamond.position = pos
+        addChild(diamond)
+        
+    }
+    
     func didBegin(_ contact: SKPhysicsContact) {
+        if contact.bodyA.categoryBitMask == dsCategory || contact.bodyB.categoryBitMask == dsCategory{
+            if contact.bodyA.categoryBitMask == dsCategory{
+                contact.bodyA.node?.removeFromParent()
+            }
+            if contact.bodyB.categoryBitMask == dsCategory{
+                contact.bodyB.node?.removeFromParent()
+            }
+            let dsFinish = SKEmitterNode(fileNamed: "diamondRemove.sks")
+            dsFinish?.position = CGPoint(x: contact.contactPoint.x + 100, y: contact.contactPoint.y)
+            dsFinish?.zPosition = 0
+            let waitAction = SKAction.wait(forDuration: 0.4)
+            addChild(dsFinish!)
+            dsFinish?.run(SKAction.sequence([waitAction, SKAction.removeFromParent()]))
+            
+        }
+        
         if notContact && (contact.bodyA.categoryBitMask == pipeCategory || contact.bodyB.categoryBitMask == pipeCategory){
             if contact.collisionImpulse > 1400{
                 let impulse = speedCar
