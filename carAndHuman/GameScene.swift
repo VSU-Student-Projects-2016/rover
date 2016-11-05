@@ -36,6 +36,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var moveGround1: SKAction!
     var moveGround2: SKAction!
     var pipe: SKShapeNode!
+    var heart: Heart!
     
     var isTouch = false
     var spawn = false
@@ -57,13 +58,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         spawnPipe(position: CGPoint(x: 8000, y: 50))
         newSaw = Saw(pos: CGPoint(x: ground2.position.x + ground2.frame.size.width/2 + 400, y: ground2.position.y + ground2.frame.size.height + 350))
         newSaw.add(to: self)
-        //spawnSaw(position: CGPoint(x: ground2.position.x + ground2.frame.size.width/2 + 400, y: ground2.position.y + ground2.frame.size.height + 350))
         
-       // spawnSaw(position: CGPoint(x: ground2.position.x + ground2.frame.size.width/2 + 600, y: ground2.position.y + ground2.frame.size.height + 150))
-
+        
         
         myNewCar = Car()
         myNewCar.add(to: self)
+        
+        
         
         view.showsPhysics = true
         
@@ -73,6 +74,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         cam.yScale = 2
         addChild(cam)
         cam.position = myNewCar.bodyCar.position
+        
+        
+        heart = Heart.init(pos: CGPoint(x: cam.position.x +  100, y: cam.position.y +  100))
+        heart.add(to: self)
+
     }
     
     
@@ -128,6 +134,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         else{
             cam.position = myNewMan.arm1.position
         }
+        heart.heart.position = CGPoint(x: cam.position.x + self.frame.width - 100, y: cam.position.y +  self.frame.width/2 )
+        
+        
         
         if isTouch && notContact{
             speedCar = speedCar + 50
@@ -157,32 +166,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
     }
     
-    /*func spawnSaw(position: CGPoint)
-    {
-        saw = SKShapeNode(rectOf: CGSize(width: 100, height: 100))
-        saw.physicsBody = SKPhysicsBody(rectangleOf: CGSize(width: 100, height: 100))
-        saw.fillColor = SKColor.black
-        saw.physicsBody?.categoryBitMask = sawCategory
-        saw.physicsBody?.collisionBitMask =  bodyCategory | headCategory | arm1Category | leg1Category
-        saw.physicsBody?.contactTestBitMask =  bodyCategory | headCategory | arm1Category | leg1Category | arm2Category | leg2Category
-        saw.physicsBody?.isDynamic = false
-        //let rotateSaw = SKAction.applyTorque(-5000, duration: 9)
-        //let rotateSawForever = SKAction.repeatForever(rotateSaw)
-        //saw.run(rotateSawForever)
-        saw.position = position
-        saw.physicsBody?.friction = 100
-        saw.zPosition = 10
-        
-        addChild(saw)
-        
-        let center = SKShapeNode(rectOf: CGSize(width: 50, height: 50))
-        center.fillColor = SKColor.red
-        center.position = saw.position
-        center.zPosition = 15
-        saw.addChild(center)
-        
-    }
-    */
     func spawnSpike()
     {
         let spikePath = UIBezierPath() // Создаем и инициализируем объект типа UIBezierPath.
