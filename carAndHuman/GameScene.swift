@@ -37,6 +37,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var moveGround2: SKAction!
     var pipe: SKShapeNode!
     var heart: Heart!
+    var score: SKLabelNode!
     
     var isTouch = false
     var spawn = false
@@ -46,6 +47,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var distance = 0
     var maxSpeed:CGFloat = 0.0
     var f = true
+    var scoreCount = 0
     
     override func didMove(to view: SKView) {
         self.physicsWorld.gravity = CGVector(dx: 0.0, dy: -5.0)
@@ -78,9 +80,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         heart = Heart.init(pos: CGPoint(x: cam.position.x +  100, y: cam.position.y +  100))
         heart.add(to: self)
-
+        
+        score = SKLabelNode(text: "0")
+        score.fontSize = 70
+        score.position = CGPoint(x: cam.position.x +  100, y: cam.position.y +  100)
+        addChild(score)
     }
-    
     
     func createGround()
     {
@@ -134,8 +139,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     
     override func update(_ currentTime: TimeInterval) {
-        
-        
         if camCar{
             cam.position = myNewCar.circle2.position
         }
@@ -144,7 +147,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
         
         heart.updatePosition(pos: CGPoint(x: cam.position.x + self.frame.width - 100, y: cam.position.y +  self.frame.width/2 ))
-        
+        score.position = CGPoint(x: cam.position.x - self.frame.width + 100, y: cam.position.y +  self.frame.width/2 )
         
         
         if isTouch && notContact{
@@ -222,14 +225,15 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             let waitAction = SKAction.wait(forDuration: 0.4)
             addChild(dsFinish!)
             dsFinish?.run(SKAction.sequence([waitAction, SKAction.removeFromParent()]))
-            
+            scoreCount = scoreCount + 10
+            score.text = String(scoreCount)
         }
         
         if notContact && (contact.bodyA.categoryBitMask == pipeCategory || contact.bodyB.categoryBitMask == pipeCategory){
             if contact.collisionImpulse > 1400{
                 let impulse = speedCar
-                print(impulse)
-                print(contact.collisionImpulse)
+                //print(impulse)
+                //print(contact.collisionImpulse)
                 notContact = false
                 speedCar = 0
                 myNewCar.run(speed: speedCar)
@@ -253,7 +257,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             else{
                 manCategory = contact.bodyB.categoryBitMask
             }
-            print(contact.collisionImpulse)
+            //print(contact.collisionImpulse)
             if contact.collisionImpulse > 60{
                 switch(manCategory){
                 case arm1Category:

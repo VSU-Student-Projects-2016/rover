@@ -134,9 +134,7 @@ class Car: SKNode{
         scene.physicsWorld.add(pinCircle1Pin)
         scene.physicsWorld.add(pinCircle2Pin)
         
-        print("body car \((bodyCar.physicsBody?.mass)!)")
-        print("circle1 \((circle1.physicsBody?.mass)!)")
-        print("circle2 \((circle2.physicsBody?.mass)!)")
+        
         
     }
     
