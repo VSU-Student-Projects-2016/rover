@@ -45,11 +45,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var speedCar: CGFloat = 0.0
     var distance = 0
     var maxSpeed:CGFloat = 0.0
-
+    var reset = false
    
     var scoreCount = 0
-
-    
+    var timer: Int = 0
+    var timers = [Int]()
+    var timerLast = 0
 
 
     
@@ -58,6 +59,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         self.physicsWorld.contactDelegate = self
         
         self.backgroundColor = SKColor.blue
+        
+        let wait = SKAction.wait(forDuration: 0.5)
+        let block = SKAction.run({() in
+            self.timer = self.timer + 1
+        })
+        run(SKAction.repeatForever(SKAction.sequence([wait, block])))
         
         createGround()
         spawnPipe(position: CGPoint(x: ground2.position.x + ground2.frame.size.width/2, y: ground2.position.y + ground2.frame.size.height))
@@ -82,23 +89,34 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         cam.position = myNewCar.bodyCar.position
         
         
-        heart = Heart.init(pos: CGPoint(x: cam.position.x +  100, y: cam.position.y +  100))
-        heart.add(to: self)
+        heart = Heart.init(pos: CGPoint(x: 250, y: 180))
+        cam.addChild(heart.heart1)
+        cam.addChild(heart.heart2)
+        cam.addChild(heart.heart3)
         
         score = SKLabelNode(text: "0")
-        score.fontSize = 70
+        score.fontSize = 50
         score.position = CGPoint(x: cam.position.x +  100, y: cam.position.y +  100)
-        addChild(score)
+        score.position = CGPoint(x: -270, y: 180)
+        print(self.frame.width)
+        print(self.frame.height)
+        cam.addChild(score)
     }
     
 
     func resetScene(){
+        reset = true
+        timer = 0
         myNewMan.removeFromParent()
         myNewCar.removeFromParent()
         notContact = true
         camCar = true
         myNewCar = Car()
         myNewCar.add(to: self)
+        let resetCam = SKAction.run({() in
+                self.reset = false
+        })
+        cam.run(SKAction.sequence([SKAction.move(to: myNewCar.circle2.position, duration: 5), resetCam]))
     }
     
 
@@ -154,15 +172,18 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     
     override func update(_ currentTime: TimeInterval) {
-        if camCar{
-            cam.position = myNewCar.circle2.position
+        if !reset{
+            if camCar{
+                cam.position = myNewCar.circle2.position
+            }
+            else{
+                cam.position = myNewMan.arm1.position
+            }
         }
-        else{
-            cam.position = myNewMan.arm1.position
+
+        if timerLast > 0 && timer - timerLast > 4{
+            resetScene()
         }
-        
-        heart.updatePosition(pos: CGPoint(x: cam.position.x + self.frame.width - 100, y: cam.position.y +  self.frame.width/2 ))
-        score.position = CGPoint(x: cam.position.x - self.frame.width + 100, y: cam.position.y +  self.frame.width/2 )
         
         
         if isTouch && notContact{
@@ -225,6 +246,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     func didBegin(_ contact: SKPhysicsContact) {
+        
+        
         if contact.bodyA.categoryBitMask == dsCategory || contact.bodyB.categoryBitMask == dsCategory{
             if contact.bodyA.categoryBitMask == dsCategory{
                 contact.bodyA.node?.removeFromParent()
@@ -260,9 +283,17 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             
                 //минус сердце
                 heart.delHeart()
-                resetScene()
+                //resetScene()
+                print(timer)
             }
         }
+        
+        if contact.bodyA.categoryBitMask == groundCategory || contact.bodyB.categoryBitMask == groundCategory{
+            print("contact ground")
+            timerLast = timer
+            timers.append(timer)
+        }
+        
         if contact.bodyA.categoryBitMask == sawCategory || contact.bodyB.categoryBitMask == sawCategory{
             let manCategory: UInt32
             if contact.bodyA.categoryBitMask != sawCategory{
@@ -299,5 +330,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 
             }
         }
+        
     }
 }

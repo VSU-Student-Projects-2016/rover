@@ -25,17 +25,17 @@ class Heart: SKNode{
         heart1 = SKSpriteNode(texture: heartTexture)
         heart1.position = pos
         heart1.zPosition = 20
-        heart1.scale(to: CGSize(width: 100, height: 100))
+        heart1.setScale(0.5)
         
         heart2 = SKSpriteNode(texture: heartTexture)
-        heart2.position = CGPoint(x: heart1.position.x - 100, y: heart1.position.y)
+        heart2.position = CGPoint(x: heart1.position.x - 30, y: heart1.position.y)
         heart2.zPosition = 20
-        heart2.scale(to: CGSize(width: 100, height: 100))
+        heart2.setScale(0.5)
         
         heart3 = SKSpriteNode(texture: heartTexture)
-        heart3.position = CGPoint(x: heart2.position.x - 100, y: heart2.position.y)
+        heart3.position = CGPoint(x: heart2.position.x - 30, y: heart2.position.y)
         heart3.zPosition = 20
-        heart3.scale(to: CGSize(width: 100, height: 100))
+        heart3.setScale(0.5)
 
     }
     func add(to scene: SKScene){
@@ -47,13 +47,7 @@ class Heart: SKNode{
         fatalError("init(coder:) has not been implemented")
     }
     
-     func updatePosition(pos: CGPoint) {
-        heart1.position = pos
-        heart2.position = CGPoint(x: heart1.position.x - 105, y: heart1.position.y)
-        heart3.position = CGPoint(x: heart2.position.x - 105, y: heart2.position.y)
-
-    }
-    
+        
     func delHeart (){
 
         if (count == 3){
