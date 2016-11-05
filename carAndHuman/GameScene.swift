@@ -134,7 +134,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         else{
             cam.position = myNewMan.arm1.position
         }
-        heart.heart.position = CGPoint(x: cam.position.x + self.frame.width - 100, y: cam.position.y +  self.frame.width/2 )
+        
+        heart.updatePosition(pos: CGPoint(x: cam.position.x + self.frame.width - 100, y: cam.position.y +  self.frame.width/2 ))
         
         
         
@@ -204,6 +205,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 myNewMan.add(to: self)
                 myNewMan.impulse(force: contact.collisionImpulse * 0.002)
             
+                //минус сердце
+                heart.delHeart()
             }
         }
         if contact.bodyA.categoryBitMask == sawCategory || contact.bodyB.categoryBitMask == sawCategory{
