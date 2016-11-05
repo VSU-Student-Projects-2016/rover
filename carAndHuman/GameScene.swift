@@ -40,14 +40,18 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var score: SKLabelNode!
     
     var isTouch = false
-    var spawn = false
     var notContact = true
     var camCar = true
     var speedCar: CGFloat = 0.0
     var distance = 0
     var maxSpeed:CGFloat = 0.0
-    var f = true
+
+   
     var scoreCount = 0
+
+    
+
+
     
     override func didMove(to view: SKView) {
         self.physicsWorld.gravity = CGVector(dx: 0.0, dy: -5.0)
@@ -87,6 +91,17 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         addChild(score)
     }
     
+
+    func resetScene(){
+        myNewMan.removeFromParent()
+        myNewCar.removeFromParent()
+        notContact = true
+        camCar = true
+        myNewCar = Car()
+        myNewCar.add(to: self)
+    }
+    
+
     func createGround()
     {
         let groundPath = UIBezierPath()
@@ -157,11 +172,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             //f = true
         }
         else{
-            if f && speedCar > 0 && notContact{
+            if speedCar > 0 && notContact{
                 speedCar = speedCar - 50
                 myNewCar.run(speed: 0)
-                
-                //f = false
             }
         }
     }
@@ -247,6 +260,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             
                 //минус сердце
                 heart.delHeart()
+                resetScene()
             }
         }
         if contact.bodyA.categoryBitMask == sawCategory || contact.bodyB.categoryBitMask == sawCategory{
