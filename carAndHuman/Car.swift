@@ -29,7 +29,7 @@ class Car: SKNode{
     override init() {
         super.init()
         bodyCar = SKSpriteNode(imageNamed: "car")
-        bodyCar.zPosition = 0
+        bodyCar.zPosition = 1
         bodyCar.size = CGSize(width: 300, height: 150)
         circle1 = SKSpriteNode(imageNamed: "wheel")
         circle1.zPosition = 3
@@ -121,6 +121,7 @@ class Car: SKNode{
         exhaustPipe.fillColor = SKColor.black
         exhaustPipe.position = CGPoint(x: -150, y: -60)
         let exhaust = SKEmitterNode(fileNamed: "smoke.sks")
+        exhaust?.targetNode = scene
         exhaust?.position = CGPoint(x: -160, y: -60)
         exhaust?.run(SKAction.rotate(byAngle: -30, duration: 0))
         bodyCar.addChild(exhaust!)
