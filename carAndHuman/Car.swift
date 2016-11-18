@@ -93,7 +93,7 @@ class Car: SKNode{
     }
     
     func add(to scene: SKScene) {
-        bodyCar.position = CGPoint(x: -150, y: 450)
+        bodyCar.position = CGPoint(x: -150, y: 85)
         circle1.position = CGPoint(x: bodyCar.position.x - 80, y: bodyCar.position.y - 50)
         circle2.position = CGPoint(x: bodyCar.position.x + 80, y: bodyCar.position.y - 50)
         

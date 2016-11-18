@@ -28,12 +28,12 @@ class Heart: SKNode{
         heart1.setScale(0.5)
         
         heart2 = SKSpriteNode(texture: heartTexture)
-        heart2.position = CGPoint(x: heart1.position.x - 30, y: heart1.position.y)
+        heart2.position = CGPoint(x: heart1.position.x + 30, y: heart1.position.y)
         heart2.zPosition = 20
         heart2.setScale(0.5)
         
         heart3 = SKSpriteNode(texture: heartTexture)
-        heart3.position = CGPoint(x: heart2.position.x - 30, y: heart2.position.y)
+        heart3.position = CGPoint(x: heart2.position.x + 30, y: heart2.position.y)
         heart3.zPosition = 20
         heart3.setScale(0.5)
 
@@ -50,14 +50,14 @@ class Heart: SKNode{
         
     func delHeart (){
 
-        if (count == 3){
+        if count == 3{
             heart3.removeFromParent()
         }
         
-        if (count == 2){
+        if count == 2{
             heart2.removeFromParent()
-
         }
+        
         count = count - 1
         
     }

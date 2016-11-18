@@ -38,7 +38,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var pipe: SKShapeNode!
     var heart: Heart!
     var score: SKLabelNode!
+    var resetButton: SKSpriteNode!
     
+    var heartDel = true
     var isTouch = false
     var notContact = true
     var camCar = true
@@ -46,7 +48,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var distance = 0
     var maxSpeed:CGFloat = 0.0
     var reset = false
-   
+    let widthGround:CGFloat = 8000
+    
     var scoreCount = 0
     var timer: Int = 0
     var timers = [Int]()
@@ -88,6 +91,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         addChild(cam)
         cam.position = myNewCar.bodyCar.position
         
+        resetButton = SKSpriteNode(imageNamed: "repeat")
+        resetButton.setScale(0.7)
+        resetButton.position = CGPoint(x: 0, y: 180)
+        cam.addChild(resetButton)
         
         heart = Heart.init(pos: CGPoint(x: 250, y: 180))
         cam.addChild(heart.heart1)
@@ -106,8 +113,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 
     func resetScene(){
         reset = true
+        heart.delHeart()
         timer = 0
-        myNewMan.removeFromParent()
+        timerLast = 0
+        if !heartDel{
+            myNewMan.removeFromParent()
+        }
+        heartDel = true
         myNewCar.removeFromParent()
         notContact = true
         camCar = true
@@ -116,6 +128,32 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         let resetCam = SKAction.run({() in
                 self.reset = false
         })
+        if heart.count == 0{
+            heart.count = 3
+            scoreCount = 0
+            score.text = "0"
+            cam.addChild(heart.heart2)
+            cam.addChild(heart.heart3)
+            var xDiamond: CGFloat = 0.0
+            while xDiamond < widthGround{
+                self.physicsWorld.enumerateBodies(alongRayStart: CGPoint(x: xDiamond, y: 800), end: CGPoint(x: xDiamond, y: 0)) { (b:SKPhysicsBody, position: CGPoint, vector: CGVector, boolPointer: UnsafeMutablePointer<ObjCBool>) in
+                    if b.categoryBitMask == dsCategory{
+                        b.node?.removeFromParent()
+                    }
+                }
+                xDiamond = xDiamond + 300
+            }
+            xDiamond = 0.0
+            while xDiamond < widthGround{
+                self.physicsWorld.enumerateBodies(alongRayStart: CGPoint(x: xDiamond, y: 800), end: CGPoint(x: xDiamond, y: 0)) { (b:SKPhysicsBody, position: CGPoint, vector: CGVector, boolPointer: UnsafeMutablePointer<ObjCBool>) in
+                    if b.categoryBitMask == groundCategory{
+                        self.spawnDiamonds(pos: CGPoint(x: position.x, y: position.y + 100))
+                    }
+                }
+                xDiamond = xDiamond + 300
+            }
+
+        }
         cam.run(SKAction.sequence([SKAction.move(to: myNewCar.circle2.position, duration: 5), resetCam]))
     }
     
@@ -123,7 +161,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     func createGround()
     {
         let groundPath = UIBezierPath()
-        let widthGround:CGFloat = 8000
         groundPath.move(to: CGPoint(x: -400, y: 0))
         groundPath.addLine(to: CGPoint(x: 600, y: 0))
         groundPath.addLine(to: CGPoint(x: 1200, y: 400))
@@ -163,7 +200,15 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        isTouch = true
+        for touch: AnyObject in touches{
+            let location = touch.location(in: cam)
+            if resetButton.contains(location){
+                resetScene()
+            }
+            else{
+                isTouch = true
+            }
+        }
     }
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -239,7 +284,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         diamond.physicsBody = SKPhysicsBody(texture: diamondTexture, size: diamondTexture.size())
         diamond.physicsBody?.categoryBitMask = dsCategory
         diamond.physicsBody?.isDynamic = false
-        diamond.physicsBody?.contactTestBitMask = carCategory
+        diamond.physicsBody?.contactTestBitMask = carCategory | bodyCategory | arm1Category | arm2Category | leg1Category | leg2Category | headCategory
         diamond.position = pos
         addChild(diamond)
         
@@ -282,7 +327,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 myNewMan.impulse(force: contact.collisionImpulse * 0.002)
             
                 //минус сердце
-                heart.delHeart()
+                //heart.delHeart()
+                heartDel = false
                 //resetScene()
                 print(timer)
             }
