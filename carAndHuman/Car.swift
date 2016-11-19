@@ -42,7 +42,7 @@ class Car: SKNode{
         //bodyCar.physicsBody = SKPhysicsBody(rectangleOf: bodyCar.frame.size)
         bodyCar.physicsBody = SKPhysicsBody(texture: carTexture, size: CGSize(width: 300, height: 150))
         bodyCar.physicsBody?.categoryBitMask = carCategory
-        bodyCar.physicsBody?.collisionBitMask =  groundCategory | pipeCategory
+        bodyCar.physicsBody?.collisionBitMask =  groundCategory | pipeCategory | rockCategory | platformCategory
         bodyCar.physicsBody?.contactTestBitMask = pipeCategory
         bodyCar.physicsBody?.isDynamic = true
        // bodyCar.physicsBody?.mass = 1
