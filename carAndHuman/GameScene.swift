@@ -22,6 +22,7 @@ let spikeCategory: UInt32 = 1 << 11
 let wheelCategory: UInt32 = 1 << 12
 let springCategory: UInt32 = 1 << 13
 let dsCategory: UInt32 = 1 << 14
+let rockCategory: UInt32 = 1 << 15
 
 
 class GameScene: SKScene, SKPhysicsContactDelegate {
@@ -29,6 +30,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var myNewMan: Human!
     var myNewCar: Car!
     var newSaw: Saw!
+    var rocks = [Rock]()
     var cam: SKCameraNode!
     var ground1: SKShapeNode!
     var ground2: SKShapeNode!
@@ -55,7 +57,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var timers = [Int]()
     var timerLast = 0
 
-
     
     override func didMove(to view: SKView) {
         self.physicsWorld.gravity = CGVector(dx: 0.0, dy: -5.0)
@@ -75,6 +76,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         newSaw = Saw(pos: CGPoint(x: ground2.position.x + ground2.frame.size.width/2 + 400, y: ground2.position.y + ground2.frame.size.height + 350))
         newSaw.add(to: self)
         
+        createRocks()
         
         
         myNewCar = Car()
@@ -157,6 +159,20 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         cam.run(SKAction.sequence([SKAction.move(to: myNewCar.circle2.position, duration: 5), resetCam]))
     }
     
+    func createRocks(){
+        var step: Int!
+        step = 150
+        rocks.append(Rock.init(pos: CGPoint(x: 3500 + step, y: 150)))
+        rocks.append(Rock.init(pos: CGPoint(x: 3500 + (step * 2), y: 200)))
+        rocks.append(Rock.init(pos: CGPoint(x: 3500 + (step * 3), y: 200)))
+        rocks.append(Rock.init(pos: CGPoint(x: 3500 + (step * 4), y: 200)))
+        rocks.append(Rock.init(pos: CGPoint(x: 3500 + (step * 5), y: 200)))
+        rocks.append(Rock.init(pos: CGPoint(x: 3500 + (step * 6), y: 200)))
+        
+        for rock: Rock in rocks{
+            rock.add(to: self)
+        }
+    }
 
     func createGround()
     {
