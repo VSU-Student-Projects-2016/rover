@@ -31,11 +31,7 @@ class Human: SKNode {
         bodyMan.physicsBody = SKPhysicsBody(circleOfRadius: 20)
         bodyMan.physicsBody?.isDynamic = true
         bodyMan.physicsBody?.categoryBitMask = bodyCategory
-<<<<<<< HEAD
-        bodyMan.physicsBody?.collisionBitMask =  groundCategory | sawCategory | spearCategory
-=======
-        bodyMan.physicsBody?.collisionBitMask =  groundCategory | sawCategory | spikeCategory | rockCategory
->>>>>>> 207e636da65e65a96f267a2c8bec3ffc18af514f
+        bodyMan.physicsBody?.collisionBitMask =  groundCategory | sawCategory | spikeCategory | rockCategory | spearCategory
         bodyMan.physicsBody?.contactTestBitMask = groundCategory
         bodyMan.fillColor = SKColor.red
         bodyMan.position = CGPoint (x: pos.x - 30, y: pos.y)
@@ -44,11 +40,7 @@ class Human: SKNode {
         leg1.physicsBody = SKPhysicsBody(rectangleOf: CGSize(width: 60, height: 20))
         leg1.physicsBody?.isDynamic = true
         leg1.physicsBody?.categoryBitMask = leg1Category
-<<<<<<< HEAD
-        leg1.physicsBody?.collisionBitMask =  groundCategory | sawCategory | spearCategory
-=======
-        leg1.physicsBody?.collisionBitMask =  groundCategory | sawCategory | spikeCategory | rockCategory
->>>>>>> 207e636da65e65a96f267a2c8bec3ffc18af514f
+        leg1.physicsBody?.collisionBitMask =  groundCategory | sawCategory | spikeCategory | rockCategory | spearCategory
         leg1.physicsBody?.contactTestBitMask = groundCategory
         leg1.fillColor = SKColor.red
         leg1.position = CGPoint (x: pos.x - 80 , y: pos.y - 20)
@@ -58,11 +50,7 @@ class Human: SKNode {
         leg2.physicsBody = SKPhysicsBody(rectangleOf: CGSize(width: 90, height: 20))
         leg2.physicsBody?.isDynamic = true
         leg2.physicsBody?.categoryBitMask = leg2Category
-<<<<<<< HEAD
-        leg2.physicsBody?.collisionBitMask =  groundCategory | sawCategory | spearCategory
-=======
-        leg2.physicsBody?.collisionBitMask =  groundCategory | sawCategory | spikeCategory | rockCategory
->>>>>>> 207e636da65e65a96f267a2c8bec3ffc18af514f
+        leg2.physicsBody?.collisionBitMask =  groundCategory | sawCategory | spikeCategory | rockCategory | spearCategory
         leg2.physicsBody?.contactTestBitMask = groundCategory
         leg2.fillColor = SKColor.red
         leg2.position = CGPoint (x: pos.x - 80 , y: pos.y + 20)
@@ -72,11 +60,7 @@ class Human: SKNode {
         arm1.physicsBody = SKPhysicsBody(rectangleOf: CGSize(width: 90, height: 20))
         arm1.physicsBody?.isDynamic = true
         arm1.physicsBody?.categoryBitMask = arm1Category
-<<<<<<< HEAD
-        arm1.physicsBody?.collisionBitMask =  groundCategory | sawCategory | spearCategory
-=======
-        arm1.physicsBody?.collisionBitMask =  groundCategory | sawCategory | spikeCategory | rockCategory
->>>>>>> 207e636da65e65a96f267a2c8bec3ffc18af514f
+        arm1.physicsBody?.collisionBitMask =  groundCategory | sawCategory | spikeCategory | rockCategory | spearCategory
         arm1.physicsBody?.contactTestBitMask = groundCategory
         arm1.fillColor = SKColor.red
         arm1.position = CGPoint (x: pos.x + 40 , y: pos.y - 20)
@@ -86,11 +70,7 @@ class Human: SKNode {
         arm2.physicsBody = SKPhysicsBody(rectangleOf: CGSize(width: 90, height: 20))
         arm2.physicsBody?.isDynamic = true
         arm2.physicsBody?.categoryBitMask = arm2Category
-<<<<<<< HEAD
-        arm2.physicsBody?.collisionBitMask =  groundCategory | sawCategory | spearCategory
-=======
-        arm2.physicsBody?.collisionBitMask =  groundCategory | sawCategory | spikeCategory | rockCategory
->>>>>>> 207e636da65e65a96f267a2c8bec3ffc18af514f
+        arm2.physicsBody?.collisionBitMask =  groundCategory | sawCategory | spikeCategory | rockCategory | spearCategory
         arm2.physicsBody?.contactTestBitMask = groundCategory
         arm2.fillColor = SKColor.red
         arm2.position = CGPoint (x: pos.x + 40 , y: pos.y + 20)
@@ -100,11 +80,7 @@ class Human: SKNode {
         headMan.physicsBody?.isDynamic = true
         
         headMan.physicsBody?.categoryBitMask = headCategory
-<<<<<<< HEAD
-        headMan.physicsBody?.collisionBitMask =  groundCategory | sawCategory | spearCategory
-=======
-        headMan.physicsBody?.collisionBitMask =  groundCategory | sawCategory | spikeCategory | rockCategory
->>>>>>> 207e636da65e65a96f267a2c8bec3ffc18af514f
+        headMan.physicsBody?.collisionBitMask =  groundCategory | sawCategory | spikeCategory | rockCategory | spearCategory
         headMan.physicsBody?.contactTestBitMask = groundCategory
         headMan.fillColor = SKColor.red
         headMan.position = pos

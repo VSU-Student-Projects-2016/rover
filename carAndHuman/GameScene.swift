@@ -22,26 +22,19 @@ let spikeCategory: UInt32 = 1 << 11
 let wheelCategory: UInt32 = 1 << 12
 let springCategory: UInt32 = 1 << 13
 let dsCategory: UInt32 = 1 << 14
-<<<<<<< HEAD
 let spearCategory: UInt32 = 1 << 15
 let spearHeadCategory: UInt32 = 1 << 16
-=======
-let rockCategory: UInt32 = 1 << 15
-let platformCategory: UInt32 = 1 << 16
-
->>>>>>> 207e636da65e65a96f267a2c8bec3ffc18af514f
+let rockCategory: UInt32 = 1 << 17
+let platformCategory: UInt32 = 1 << 18
 
 class GameScene: SKScene, SKPhysicsContactDelegate {
     
     var myNewMan: Human!
     var myNewCar: Car!
     var newSaw: Saw!
-<<<<<<< HEAD
     var newSpear: Spear!
-=======
     var newPlatform: Platform!
     var rocks = [Rock]()
->>>>>>> 207e636da65e65a96f267a2c8bec3ffc18af514f
     var cam: SKCameraNode!
     var ground1: SKShapeNode!
     var ground2: SKShapeNode!
@@ -88,7 +81,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         newSaw = Saw(pos: CGPoint(x: ground2.position.x + ground2.frame.size.width/2 + 400, y: ground2.position.y + ground2.frame.size.height + 350))
         newSaw.add(to: self)
         
-<<<<<<< HEAD
     
         self.physicsWorld.enumerateBodies(alongRayStart: CGPoint(x: ground2.position.x + ground2.frame.size.width/2 + 1500, y: 800), end: CGPoint(x: ground2.position.x + ground2.frame.size.width/2 + 1500, y: 0)) { (b:SKPhysicsBody, position: CGPoint, vector: CGVector, boolPointer: UnsafeMutablePointer<ObjCBool>) in
             if b.categoryBitMask == groundCategory{
@@ -97,9 +89,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             }
         }
 
-=======
         createRocks()
->>>>>>> 207e636da65e65a96f267a2c8bec3ffc18af514f
+
         
         //newPlatform = Platform(pos: CGPoint(x: 1200, y: 400))
         //newPlatform.add(to: self)
