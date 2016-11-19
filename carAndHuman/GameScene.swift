@@ -22,13 +22,15 @@ let spikeCategory: UInt32 = 1 << 11
 let wheelCategory: UInt32 = 1 << 12
 let springCategory: UInt32 = 1 << 13
 let dsCategory: UInt32 = 1 << 14
-
+let spearCategory: UInt32 = 1 << 15
+let spearHeadCategory: UInt32 = 1 << 16
 
 class GameScene: SKScene, SKPhysicsContactDelegate {
     
     var myNewMan: Human!
     var myNewCar: Car!
     var newSaw: Saw!
+    var newSpear: Spear!
     var cam: SKCameraNode!
     var ground1: SKShapeNode!
     var ground2: SKShapeNode!
@@ -40,6 +42,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var score: SKLabelNode!
     var resetButton: SKSpriteNode!
     
+    var isSpear = true
     var heartDel = true
     var isTouch = false
     var notContact = true
@@ -75,6 +78,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         newSaw = Saw(pos: CGPoint(x: ground2.position.x + ground2.frame.size.width/2 + 400, y: ground2.position.y + ground2.frame.size.height + 350))
         newSaw.add(to: self)
         
+    
+        self.physicsWorld.enumerateBodies(alongRayStart: CGPoint(x: ground2.position.x + ground2.frame.size.width/2 + 1500, y: 800), end: CGPoint(x: ground2.position.x + ground2.frame.size.width/2 + 1500, y: 0)) { (b:SKPhysicsBody, position: CGPoint, vector: CGVector, boolPointer: UnsafeMutablePointer<ObjCBool>) in
+            if b.categoryBitMask == groundCategory{
+                self.newSpear = Spear(pos: position)
+                self.newSpear.add(to: self)
+            }
+        }
+
         
         
         myNewCar = Car()
@@ -113,6 +124,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 
     func resetScene(){
         reset = true
+        isSpear = false
         heart.delHeart()
         timer = 0
         timerLast = 0
@@ -291,7 +303,40 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     func didBegin(_ contact: SKPhysicsContact) {
+        if isSpear && (contact.bodyA.categoryBitMask == spearHeadCategory || contact.bodyB.categoryBitMask == spearHeadCategory) {
+            let manCategory: UInt32
+            var jointManSpear: SKPhysicsJointSliding
+            
+            if contact.bodyA.categoryBitMask != spearHeadCategory{
+                manCategory = contact.bodyA.categoryBitMask
+            }
+            else{
+                manCategory = contact.bodyB.categoryBitMask
+            }
         
+            switch manCategory {
+            case arm1Category:
+                jointManSpear = SKPhysicsJointSliding.joint(withBodyA: newSpear.spearHead.physicsBody!, bodyB: myNewMan.arm1.physicsBody!, anchor: contact.contactPoint, axis: CGVector(dx: 0, dy: 1))
+            case arm2Category:
+                jointManSpear = SKPhysicsJointSliding.joint(withBodyA: newSpear.spearHead.physicsBody!, bodyB: myNewMan.arm2.physicsBody!, anchor: contact.contactPoint, axis: CGVector(dx: 0, dy: 1))
+            case leg1Category:
+                jointManSpear = SKPhysicsJointSliding.joint(withBodyA: newSpear.spearHead.physicsBody!, bodyB: myNewMan.leg1.physicsBody!, anchor: contact.contactPoint, axis: CGVector(dx: 0, dy: 1))
+            case leg2Category:
+                jointManSpear = SKPhysicsJointSliding.joint(withBodyA: newSpear.spearHead.physicsBody!, bodyB: myNewMan.leg2.physicsBody!, anchor: contact.contactPoint, axis: CGVector(dx: 0, dy: 1))
+            case headCategory:
+                jointManSpear = SKPhysicsJointSliding.joint(withBodyA: newSpear.spearHead.physicsBody!, bodyB: myNewMan.headMan.physicsBody!, anchor: contact.contactPoint,axis: CGVector(dx: 0, dy: 1))
+            default:
+                jointManSpear = SKPhysicsJointSliding.joint(withBodyA: newSpear.spearHead.physicsBody!, bodyB: myNewMan.bodyMan.physicsBody!, anchor: contact.contactPoint, axis: CGVector(dx: 0, dy: 1))
+            }
+            myNewMan.arm1.physicsBody?.collisionBitMask = groundCategory | sawCategory
+            myNewMan.arm2.physicsBody?.collisionBitMask = groundCategory | sawCategory
+            myNewMan.leg1.physicsBody?.collisionBitMask = groundCategory | sawCategory
+            myNewMan.leg2.physicsBody?.collisionBitMask = groundCategory | sawCategory
+            myNewMan.bodyMan.physicsBody?.collisionBitMask = groundCategory | sawCategory
+            myNewMan.headMan.physicsBody?.collisionBitMask = groundCategory | sawCategory
+            self.physicsWorld.add(jointManSpear)
+            isSpear = false
+        }
         
         if contact.bodyA.categoryBitMask == dsCategory || contact.bodyB.categoryBitMask == dsCategory{
             if contact.bodyA.categoryBitMask == dsCategory{
