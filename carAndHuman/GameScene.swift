@@ -23,6 +23,7 @@ let wheelCategory: UInt32 = 1 << 12
 let springCategory: UInt32 = 1 << 13
 let dsCategory: UInt32 = 1 << 14
 let rockCategory: UInt32 = 1 << 15
+let platformCategory: UInt32 = 1 << 16
 
 
 class GameScene: SKScene, SKPhysicsContactDelegate {
@@ -30,6 +31,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var myNewMan: Human!
     var myNewCar: Car!
     var newSaw: Saw!
+    var newPlatform: Platform!
     var rocks = [Rock]()
     var cam: SKCameraNode!
     var ground1: SKShapeNode!
@@ -78,6 +80,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         createRocks()
         
+        //newPlatform = Platform(pos: CGPoint(x: 1200, y: 400))
+        //newPlatform.add(to: self)
         
         myNewCar = Car()
         myNewCar.add(to: self)
