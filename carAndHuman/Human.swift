@@ -50,7 +50,7 @@ class Human: SKNode {
         leg2.physicsBody = SKPhysicsBody(rectangleOf: CGSize(width: 90, height: 20))
         leg2.physicsBody?.isDynamic = true
         leg2.physicsBody?.categoryBitMask = leg2Category
-        leg2.physicsBody?.collisionBitMask =  groundCategory | sawCategory | spikeCategory | rockCategory | spearCategory
+        leg2.physicsBody?.collisionBitMask =  groundCategory  | sawCategory | spikeCategory | rockCategory | spearCategory
         leg2.physicsBody?.contactTestBitMask = groundCategory
         leg2.fillColor = SKColor.red
         leg2.position = CGPoint (x: pos.x - 80 , y: pos.y + 20)
@@ -80,7 +80,7 @@ class Human: SKNode {
         headMan.physicsBody?.isDynamic = true
         
         headMan.physicsBody?.categoryBitMask = headCategory
-        headMan.physicsBody?.collisionBitMask =  groundCategory | sawCategory | spikeCategory | rockCategory | spearCategory
+        headMan.physicsBody?.collisionBitMask =  groundCategory |  sawCategory | spikeCategory | rockCategory | spearCategory
         headMan.physicsBody?.contactTestBitMask = groundCategory
         headMan.fillColor = SKColor.red
         headMan.position = pos

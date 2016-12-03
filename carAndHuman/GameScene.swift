@@ -44,8 +44,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var pipe: SKShapeNode!
     var heart: Heart!
     var score: SKLabelNode!
-    var resetButton: SKSpriteNode!
+    var speedometer: SKShapeNode!
+    var arrow: SKShapeNode!
+    var wheelCar: SKPhysicsBody!
+    var accelerator: SKShapeNode!
+    var brakePedal: SKShapeNode!
     
+    var isBrake = false
     var isSpear = true
     var heartDel = true
     var isTouch = false
@@ -57,6 +62,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var reset = false
     let widthGround:CGFloat = 8000
     
+    var brakeSpeed: CGFloat = 0
     var scoreCount = 0
     var timer: Int = 0
     var timers = [Int]()
@@ -81,7 +87,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         newSaw = Saw(pos: CGPoint(x: ground2.position.x + ground2.frame.size.width/2 + 400, y: ground2.position.y + ground2.frame.size.height + 350))
         newSaw.add(to: self)
         
-    
         self.physicsWorld.enumerateBodies(alongRayStart: CGPoint(x: ground2.position.x + ground2.frame.size.width/2 + 1500, y: 800), end: CGPoint(x: ground2.position.x + ground2.frame.size.width/2 + 1500, y: 0)) { (b:SKPhysicsBody, position: CGPoint, vector: CGVector, boolPointer: UnsafeMutablePointer<ObjCBool>) in
             if b.categoryBitMask == groundCategory{
                 self.newSpear = Spear(pos: position)
@@ -98,9 +103,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         myNewCar = Car()
         myNewCar.add(to: self)
         
+        wheelCar = myNewCar.circle1.physicsBody
         
-        
-        view.showsPhysics = true
+       // view.showsPhysics = true
         
         cam = SKCameraNode()
         self.camera = cam
@@ -109,20 +114,19 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         addChild(cam)
         cam.position = myNewCar.bodyCar.position
         
-        resetButton = SKSpriteNode(imageNamed: "repeat")
-        resetButton.setScale(0.7)
-        resetButton.position = CGPoint(x: 0, y: 180)
-        cam.addChild(resetButton)
-        
-        heart = Heart.init(pos: CGPoint(x: 250, y: 180))
+        heart = Heart.init(pos: CGPoint(x: -350, y: 180))
         cam.addChild(heart.heart1)
         cam.addChild(heart.heart2)
         cam.addChild(heart.heart3)
         
+        createSpeedometer()
+        
+        createPedal()
+        
         score = SKLabelNode(text: "0")
         score.fontSize = 50
         score.position = CGPoint(x: cam.position.x +  100, y: cam.position.y +  100)
-        score.position = CGPoint(x: -270, y: 180)
+        score.position = CGPoint(x: 270, y: 180)
         print(self.frame.width)
         print(self.frame.height)
         cam.addChild(score)
@@ -144,6 +148,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         camCar = true
         myNewCar = Car()
         myNewCar.add(to: self)
+        wheelCar = myNewCar.circle1.physicsBody
         let resetCam = SKAction.run({() in
                 self.reset = false
         })
@@ -208,7 +213,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         ground.physicsBody?.isDynamic = false
         ground.physicsBody?.categoryBitMask = groundCategory
         ground.physicsBody?.collisionBitMask = headCategory | bodyCategory | arm1Category | leg1Category | carCategory | wheelCategory | springCategory
-        ground.physicsBody?.friction = 200
+        ground.physicsBody?.friction = 100
         addChild(ground)
         
         ground2 = SKShapeNode(rectOf: CGSize(width: 2000, height: 100))
@@ -218,6 +223,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         ground2.physicsBody?.categoryBitMask = groundCategory
          ground.physicsBody?.collisionBitMask = headCategory | bodyCategory | arm1Category | leg1Category | carCategory | wheelCategory | springCategory
         ground2.position = CGPoint(x: 2500, y: 400)
+        ground2.physicsBody?.friction = 100
         addChild(ground2)
         
         var xDiamond: CGFloat = 0.0
@@ -232,24 +238,44 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 
     }
     
+    func createSpeedometer()
+    {
+        
+        speedometer = SKShapeNode(circleOfRadius: 40)
+        speedometer.fillColor = SKColor.black
+        
+        arrow = SKShapeNode(rectOf: CGSize(width: 10, height: 50))
+        arrow.fillColor = SKColor.green
+        arrow.position = CGPoint(x: 0, y: 0)
+        
+        speedometer.addChild(arrow)
+        speedometer.position = CGPoint(x: -300, y: -200)
+        cam.addChild(speedometer)
+        
+    }
+    
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        for touch: AnyObject in touches{
+        for touch: AnyObject in touches {
             let location = touch.location(in: cam)
-            if resetButton.contains(location){
-                resetScene()
+            if accelerator.contains(location) {
+                isTouch = true
             }
             else{
-                isTouch = true
+                if brakePedal.contains(location){
+                    isBrake = true
+                }
             }
         }
     }
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         isTouch = false
+        isBrake = false
     }
     
     
     override func update(_ currentTime: TimeInterval) {
+        arrow.zRotation = wheelCar.angularVelocity / 20
         if !reset{
             if camCar{
                 cam.position = myNewCar.circle2.position
@@ -259,21 +285,29 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             }
         }
 
-        if timerLast > 0 && timer - timerLast > 4{
+        if timerLast > 0 && timer - timerLast > 4 || timer > 60{
             resetScene()
         }
         
-        
         if isTouch && notContact{
-            speedCar = speedCar + 50
-            myNewCar.run(speed: speedCar)
-            //maxSpeed = speedCar
-            //f = true
+            speedCar = speedCar + 0.05
+            myNewCar.circle1.physicsBody?.angularVelocity -= speedCar
+            //myNewCar.run(speed: speedCar)
         }
         else{
-            if speedCar > 0 && notContact{
-                speedCar = speedCar - 50
-                myNewCar.run(speed: 0)
+            if isBrake && notContact{
+                if isBrake{
+                    brakeSpeed += 0.1
+                    myNewCar.circle1.physicsBody?.angularVelocity += brakeSpeed
+                    //myNewCar.run(speed: -speedCar)
+                }
+            }
+            else{
+                if speedCar > 0 && notContact{
+                    speedCar = 0
+                    myNewCar.circle1.physicsBody?.angularVelocity += 0.1
+                    //myNewCar.run(speed: 0)
+                }
             }
         }
     }
@@ -290,8 +324,21 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
     }
     
-    func spawnSpike()
-    {
+    func createPedal(){
+        accelerator = SKShapeNode(rectOf: CGSize(width: 60, height: 80))
+        accelerator.fillColor = SKColor.purple
+        accelerator.position = CGPoint(x: 300, y: -200)
+        
+        brakePedal = SKShapeNode(rectOf: CGSize(width: 60, height: 80))
+        brakePedal.fillColor = SKColor.brown
+        brakePedal.position = CGPoint(x: 200, y: -200)
+        
+        cam.addChild(accelerator)
+        cam.addChild(brakePedal)
+        
+    }
+    
+    func spawnSpike(){
         let spikePath = UIBezierPath() // Создаем и инициализируем объект типа UIBezierPath.
         spikePath.move(to: CGPoint.init(x: 0, y: 0))
         spikePath.addLine(to: CGPoint.init(x: -50, y: -100))
@@ -439,7 +486,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 let waitAction = SKAction.wait(forDuration: 0.4)
                 addChild(bloodMan!)
                 bloodMan?.run(SKAction.sequence([waitAction, SKAction.removeFromParent()]))
-                
+                print("saw")
             }
         }
         

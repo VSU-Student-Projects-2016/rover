@@ -11,10 +11,10 @@
 		2CC9A88F1DCB928A00041B4F /* blood.sks in Resources */ = {isa = PBXBuildFile; fileRef = 2CC9A88D1DCB928A00041B4F /* blood.sks */; };
 		2CC9A8901DCB928A00041B4F /* spark.png in Resources */ = {isa = PBXBuildFile; fileRef = 2CC9A88E1DCB928A00041B4F /* spark.png */; };
 		2CC9A8921DCBB0D600041B4F /* smoke.sks in Resources */ = {isa = PBXBuildFile; fileRef = 2CC9A8911DCBB0D600041B4F /* smoke.sks */; };
-
 		AE21ABDE1DE04DF2007219A4 /* Spear.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE21ABDD1DE04DF2007219A4 /* Spear.swift */; };
-
 		AE2A22561DE04DFD00D7C0E0 /* Rock.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE2A22551DE04DFD00D7C0E0 /* Rock.swift */; };
+		AE3B08EF1DF2F543003220B0 /* MenuScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE3B08EE1DF2F543003220B0 /* MenuScene.swift */; };
+		AE3B08F11DF2F8B2003220B0 /* MenuScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = AE3B08F01DF2F8B2003220B0 /* MenuScene.sks */; };
 		AE499F181DE0594000893427 /* Platform.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE499F171DE0594000893427 /* Platform.swift */; };
 		AE79ABEC1DC4986C00344BF6 /* GameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = AE79ABEB1DC4986C00344BF6 /* GameScene.sks */; };
 		AE79ABEE1DC4AE7F00344BF6 /* Car.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE79ABED1DC4AE7F00344BF6 /* Car.swift */; };
@@ -35,12 +35,11 @@
 		2CC9A88D1DCB928A00041B4F /* blood.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = blood.sks; sourceTree = "<group>"; };
 		2CC9A88E1DCB928A00041B4F /* spark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = spark.png; sourceTree = "<group>"; };
 		2CC9A8911DCBB0D600041B4F /* smoke.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = smoke.sks; sourceTree = "<group>"; };
-
 		AE21ABDD1DE04DF2007219A4 /* Spear.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Spear.swift; sourceTree = "<group>"; };
-
 		AE2A22551DE04DFD00D7C0E0 /* Rock.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Rock.swift; sourceTree = "<group>"; };
+		AE3B08EE1DF2F543003220B0 /* MenuScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuScene.swift; sourceTree = "<group>"; };
+		AE3B08F01DF2F8B2003220B0 /* MenuScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = MenuScene.sks; sourceTree = "<group>"; };
 		AE499F171DE0594000893427 /* Platform.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Platform.swift; sourceTree = "<group>"; };
-
 		AE79ABEB1DC4986C00344BF6 /* GameScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = GameScene.sks; sourceTree = "<group>"; };
 		AE79ABED1DC4AE7F00344BF6 /* Car.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Car.swift; sourceTree = "<group>"; };
 		AE79ABEF1DC4AEA900344BF6 /* Human.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Human.swift; sourceTree = "<group>"; };
@@ -104,12 +103,11 @@
 				2CC9A8911DCBB0D600041B4F /* smoke.sks */,
 				AE87D81F1DCDDA9B0029A1C1 /* Heart.swift */,
 				AEA57B891DCDFAC3009BE9CD /* diamondRemove.sks */,
-
 				AE21ABDD1DE04DF2007219A4 /* Spear.swift */,
-
 				AE2A22551DE04DFD00D7C0E0 /* Rock.swift */,
 				AE499F171DE0594000893427 /* Platform.swift */,
-
+				AE3B08EE1DF2F543003220B0 /* MenuScene.swift */,
+				AE3B08F01DF2F8B2003220B0 /* MenuScene.sks */,
 			);
 			path = carAndHuman;
 			sourceTree = "<group>";
@@ -176,6 +174,7 @@
 				AEBD3B131DA902AA00A8BEE1 /* Main.storyboard in Resources */,
 				AE79ABEC1DC4986C00344BF6 /* GameScene.sks in Resources */,
 				2CC9A88F1DCB928A00041B4F /* blood.sks in Resources */,
+				AE3B08F11DF2F8B2003220B0 /* MenuScene.sks in Resources */,
 				2CC9A8901DCB928A00041B4F /* spark.png in Resources */,
 				AEA57B8A1DCDFAC3009BE9CD /* diamondRemove.sks in Resources */,
 				AEBD3B151DA902AA00A8BEE1 /* Assets.xcassets in Resources */,
@@ -194,6 +193,7 @@
 			files = (
 				AEBD3B0E1DA902AA00A8BEE1 /* GameScene.swift in Sources */,
 				AE21ABDE1DE04DF2007219A4 /* Spear.swift in Sources */,
+				AE3B08EF1DF2F543003220B0 /* MenuScene.swift in Sources */,
 				AEBD3B101DA902AA00A8BEE1 /* GameViewController.swift in Sources */,
 				AE79ABF01DC4AEA900344BF6 /* Human.swift in Sources */,
 				2CA22E4A1DCA9F690003B5F8 /* Saw.swift in Sources */,

@@ -23,10 +23,28 @@ extension SKNode {
         let archiver = NSKeyedUnarchiver(forReadingWith: sceneData!)
         
         archiver.setClass(self.classForKeyedUnarchiver(), forClassName: "SKScene")
+        let scene = archiver.decodeObject(forKey: NSKeyedArchiveRootObjectKey) as! MenuScene
+        archiver.finishDecoding()
+        return scene
+    }
+    class func unarchiveFromFileGame(_ file : String) -> SKNode? {
+        
+        let path = Bundle.main.path(forResource: file, ofType: "sks")
+        
+        let sceneData: Data?
+        do {
+            sceneData = try Data(contentsOf: URL(fileURLWithPath: path!), options: .mappedIfSafe)
+        } catch _ {
+            sceneData = nil
+        }
+        let archiver = NSKeyedUnarchiver(forReadingWith: sceneData!)
+        
+        archiver.setClass(self.classForKeyedUnarchiver(), forClassName: "SKScene")
         let scene = archiver.decodeObject(forKey: NSKeyedArchiveRootObjectKey) as! GameScene
         archiver.finishDecoding()
         return scene
     }
+
 }
 
 class GameViewController: UIViewController {
@@ -34,7 +52,7 @@ class GameViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        if let scene = GameScene.unarchiveFromFile("GameScene") as? GameScene {
+        if let scene = MenuScene.unarchiveFromFile("MenuScene") as? MenuScene {
             // Configure the view.
             let skView = self.view as! SKView
             skView.showsFPS = true
@@ -48,6 +66,9 @@ class GameViewController: UIViewController {
             
             skView.presentScene(scene)
         }
+
+        
+        
     }
     
     override var shouldAutorotate : Bool {

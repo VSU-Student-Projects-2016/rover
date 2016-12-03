@@ -25,6 +25,7 @@ class Saw : SKNode{
         saw.physicsBody?.collisionBitMask =  bodyCategory | headCategory | arm1Category | leg1Category
         saw.physicsBody?.contactTestBitMask =  bodyCategory | headCategory | arm1Category | leg1Category | arm2Category | leg2Category
         saw.physicsBody?.isDynamic = false
+        saw.physicsBody?.friction = 0
         let rotateSaw = SKAction.rotate(byAngle: 180, duration: 1)
         let rotateSawForever = SKAction.repeatForever(rotateSaw)
         saw.run(rotateSawForever)
