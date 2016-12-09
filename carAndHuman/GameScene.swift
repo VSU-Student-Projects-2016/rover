@@ -7,6 +7,7 @@
 //
 import SpriteKit
 import GameplayKit
+import Foundation
 
 let carCategory: UInt32 = 1 << 0
 let groundCategory: UInt32 = 1 << 1
@@ -42,7 +43,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var moveGround1: SKAction!
     var moveGround2: SKAction!
     var pipe: SKShapeNode!
-    var heart: Heart!
+    var petrol: Petrol!
     var score: SKLabelNode!
     var speedometer: SKShapeNode!
     var arrow: SKShapeNode!
@@ -67,7 +68,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var timer: Int = 0
     var timers = [Int]()
     var timerLast = 0
-
+    let zero: CGFloat = 0.0
     
     override func didMove(to view: SKView) {
         self.physicsWorld.gravity = CGVector(dx: 0.0, dy: -5.0)
@@ -114,10 +115,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         addChild(cam)
         cam.position = myNewCar.bodyCar.position
         
-        heart = Heart.init(pos: CGPoint(x: -350, y: 180))
-        cam.addChild(heart.heart1)
-        cam.addChild(heart.heart2)
-        cam.addChild(heart.heart3)
+        petrol = Petrol.init(pos: CGPoint(x: -320, y: 180))
+        cam.addChild(petrol.pn)
         
         createSpeedometer()
         
@@ -136,7 +135,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     func resetScene(){
         reset = true
         isSpear = false
-        heart.delHeart()
         timer = 0
         timerLast = 0
         if !heartDel{
@@ -152,12 +150,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         let resetCam = SKAction.run({() in
                 self.reset = false
         })
-        if heart.count == 0{
-            heart.count = 3
+    
             scoreCount = 0
             score.text = "0"
-            cam.addChild(heart.heart2)
-            cam.addChild(heart.heart3)
             var xDiamond: CGFloat = 0.0
             while xDiamond < widthGround{
                 self.physicsWorld.enumerateBodies(alongRayStart: CGPoint(x: xDiamond, y: 800), end: CGPoint(x: xDiamond, y: 0)) { (b:SKPhysicsBody, position: CGPoint, vector: CGVector, boolPointer: UnsafeMutablePointer<ObjCBool>) in
@@ -177,7 +172,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 xDiamond = xDiamond + 300
             }
 
-        }
+        
         cam.run(SKAction.sequence([SKAction.move(to: myNewCar.circle2.position, duration: 5), resetCam]))
     }
     
@@ -275,6 +270,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     
     override func update(_ currentTime: TimeInterval) {
+        petrol.updatePetrol()
         arrow.zRotation = wheelCar.angularVelocity / 20
         if !reset{
             if camCar{
@@ -290,23 +286,21 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
         
         if isTouch && notContact{
-            speedCar = speedCar + 0.05
-            myNewCar.circle1.physicsBody?.angularVelocity -= speedCar
-            //myNewCar.run(speed: speedCar)
+            speedCar += 50
+            myNewCar.run(speed: speedCar)
         }
         else{
             if isBrake && notContact{
                 if isBrake{
-                    brakeSpeed += 0.1
-                    myNewCar.circle1.physicsBody?.angularVelocity += brakeSpeed
-                    //myNewCar.run(speed: -speedCar)
+                    brakeSpeed += 50
+                    myNewCar.run(speed: -brakeSpeed)
                 }
             }
             else{
-                if speedCar > 0 && notContact{
+                if (myNewCar.circle1.physicsBody?.angularVelocity)! > 0 && notContact{
                     speedCar = 0
-                    myNewCar.circle1.physicsBody?.angularVelocity += 0.1
-                    //myNewCar.run(speed: 0)
+                    brakeSpeed = 0
+                    myNewCar.run(speed: 0)
                 }
             }
         }
@@ -369,6 +363,16 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         addChild(diamond)
         
     }
+    
+    func readXML(){
+        
+    }
+    
+    func createLevel(){
+        
+    }
+    
+    
     
     func didBegin(_ contact: SKPhysicsContact) {
         if isSpear && (contact.bodyA.categoryBitMask == spearHeadCategory || contact.bodyB.categoryBitMask == spearHeadCategory) {
