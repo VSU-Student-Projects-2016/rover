@@ -1,0 +1,52 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<head>
+  <elements>
+    <saw X="2537" Y="120" />
+    <spear X="2931" Y="294" />
+    <saw X="3341" Y="17" />
+  </elements>
+  <ground>
+    <Point X="28" Y="31" />
+    <Point X="560" Y="127" />
+    <Point X="708" Y="151" />
+    <Point X="1034" Y="169" />
+    <Point X="1135" Y="157" />
+    <Point X="1929" Y="135" />
+    <Point X="2030" Y="151" />
+    <Point X="2100" Y="172" />
+    <Point X="2258" Y="205" />
+    <Point X="2394" Y="158" />
+    <Point X="2596" Y="108" />
+    <Point X="2750" Y="187" />
+    <Point X="2859" Y="266" />
+    <Point X="2962" Y="298" />
+    <Point X="3009" Y="348" />
+    <Point X="3078" Y="386" />
+    <Point X="3869" Y="158" />
+    <Point X="3902" Y="157" />
+    <Point X="3951" Y="162" />
+    <Point X="3951" Y="162" />
+    <Point X="4022" Y="186" />
+    <Point X="4057" Y="215" />
+    <Point X="4171" Y="268" />
+    <Point X="4776" Y="304" />
+    <Point X="4894" Y="348" />
+    <Point X="5081" Y="323" />
+    <Point X="5825" Y="274" />
+    <Point X="5952" Y="251" />
+    <Point X="6322" Y="150" />
+    <Point X="6380" Y="164" />
+    <Point X="6452" Y="195" />
+    <Point X="6558" Y="225" />
+    <Point X="6753" Y="286" />
+    <Point X="6888" Y="344" />
+    <Point X="7014" Y="323" />
+    <Point X="7421" Y="222" />
+    <Point X="7541" Y="233" />
+    <Point X="7714" Y="233" />
+    <Point X="7832" Y="169" />
+    <Point X="7865" Y="132" />
+    <Point X="7883" Y="82" />
+    <Point X="7888" Y="15" />
+  </ground>
+</head>

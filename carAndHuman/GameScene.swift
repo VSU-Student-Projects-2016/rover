@@ -51,6 +51,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var accelerator: SKShapeNode!
     var brakePedal: SKShapeNode!
     
+    
+    var xyGround = [CGPoint]()
     var isBrake = false
     var isSpear = true
     var heartDel = true
@@ -80,15 +82,17 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         let block = SKAction.run({() in
             self.timer = self.timer + 1
         })
+        
         run(SKAction.repeatForever(SKAction.sequence([wait, block])))
         
-        createGround()
-        spawnPipe(position: CGPoint(x: ground2.position.x + ground2.frame.size.width/2, y: ground2.position.y + ground2.frame.size.height))
-        spawnPipe(position: CGPoint(x: 8000, y: 50))
-        newSaw = Saw(pos: CGPoint(x: ground2.position.x + ground2.frame.size.width/2 + 400, y: ground2.position.y + ground2.frame.size.height + 350))
-        newSaw.add(to: self)
+        //createGround()
         
-        self.physicsWorld.enumerateBodies(alongRayStart: CGPoint(x: ground2.position.x + ground2.frame.size.width/2 + 1500, y: 800), end: CGPoint(x: ground2.position.x + ground2.frame.size.width/2 + 1500, y: 0)) { (b:SKPhysicsBody, position: CGPoint, vector: CGVector, boolPointer: UnsafeMutablePointer<ObjCBool>) in
+        //spawnPipe(position: CGPoint(x: ground2.position.x + ground2.frame.size.width/2, y: ground2.position.y + ground2.frame.size.height))
+        //spawnPipe(position: CGPoint(x: 8000, y: 50))
+        //newSaw = Saw(pos: CGPoint(x: ground2.position.x + ground2.frame.size.width/2 + 400, y: ground2.position.y + ground2.frame.size.height + 350))
+        //newSaw.add(to: self)
+        
+        /*self.physicsWorld.enumerateBodies(alongRayStart: CGPoint(x: ground2.position.x + ground2.frame.size.width/2 + 1500, y: 800), end: CGPoint(x: ground2.position.x + ground2.frame.size.width/2 + 1500, y: 0)) { (b:SKPhysicsBody, position: CGPoint, vector: CGVector, boolPointer: UnsafeMutablePointer<ObjCBool>) in
             if b.categoryBitMask == groundCategory{
                 self.newSpear = Spear(pos: position)
                 self.newSpear.add(to: self)
@@ -100,7 +104,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         //newPlatform = Platform(pos: CGPoint(x: 1200, y: 400))
         //newPlatform.add(to: self)
-        
+        */
         myNewCar = Car()
         myNewCar.add(to: self)
         
@@ -126,12 +130,20 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         score.fontSize = 50
         score.position = CGPoint(x: cam.position.x +  100, y: cam.position.y +  100)
         score.position = CGPoint(x: 270, y: 180)
-        print(self.frame.width)
-        print(self.frame.height)
+        createLevel()
         cam.addChild(score)
     }
     
+    func createSpear(xf: CGFloat){
+        self.physicsWorld.enumerateBodies(alongRayStart: CGPoint(x: xf, y: 800), end: CGPoint(x: xf, y: 0)) { (b:SKPhysicsBody, position: CGPoint, vector: CGVector, boolPointer: UnsafeMutablePointer<ObjCBool>) in
+            if b.categoryBitMask == groundCategory{
+                self.newSpear = Spear(pos: position)
+                self.newSpear.add(to: self)
+            }
+        }
 
+    }
+    
     func resetScene(){
         reset = true
         isSpear = false
@@ -285,13 +297,15 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             resetScene()
         }
         
-        if isTouch && notContact{
+        if isTouch && notContact && wheelCar.angularVelocity < 5{
+            petrol.expenditure()
             speedCar += 50
             myNewCar.run(speed: speedCar)
         }
         else{
             if isBrake && notContact{
                 if isBrake{
+                    petrol.expenditure()
                     brakeSpeed += 50
                     myNewCar.run(speed: -brakeSpeed)
                 }
@@ -322,10 +336,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         accelerator = SKShapeNode(rectOf: CGSize(width: 60, height: 80))
         accelerator.fillColor = SKColor.purple
         accelerator.position = CGPoint(x: 300, y: -200)
+        accelerator.zPosition = 20
         
         brakePedal = SKShapeNode(rectOf: CGSize(width: 60, height: 80))
         brakePedal.fillColor = SKColor.brown
         brakePedal.position = CGPoint(x: 200, y: -200)
+        brakePedal.zPosition = 20
         
         cam.addChild(accelerator)
         cam.addChild(brakePedal)
@@ -364,12 +380,70 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
     }
     
-    func readXML(){
+    func createGroundxml(){
+        let groundPath = UIBezierPath()
+        groundPath.move(to: xyGround[0])
+        xyGround.remove(at: 0)
+        for point in xyGround{
+            groundPath.addLine(to: point)
+        }
+        groundPath.close()
         
+        ground = SKShapeNode(path: groundPath.cgPath)
+        ground.lineWidth = 2
+        ground.fillColor = SKColor.orange
+        ground.strokeColor = SKColor.orange
+        ground.position = CGPoint(x: 0, y: 0)
+        ground.physicsBody = SKPhysicsBody(edgeChainFrom: groundPath.cgPath)
+        ground.physicsBody?.isDynamic = false
+        ground.physicsBody?.categoryBitMask = groundCategory
+        ground.physicsBody?.collisionBitMask = headCategory | bodyCategory | arm1Category | leg1Category | carCategory | wheelCategory | springCategory
+        ground.physicsBody?.friction = 100
+        addChild(ground)
+
     }
     
     func createLevel(){
+        let opt = AEXMLOptions()
+        guard
+            let xmlPath = Bundle.main.path(forResource: "lvlGame3", ofType: "xml"),
+            let data = try? Data(contentsOf: URL(fileURLWithPath: xmlPath))
+        else {return}
         
+        do {
+            let xmlDoc = try AEXMLDocument(xml: data, options: opt)
+            print(xmlDoc.xml)
+            for elem in xmlDoc.root["elements"].children{
+                let ch = elem.name
+                switch ch {
+                case "saw":
+                    let x = elem.attributes["X"]
+                    let xf = CGFloat(NumberFormatter().number(from: x!)!)
+                    let y = elem.attributes["Y"]
+                    let yf = CGFloat(NumberFormatter().number(from: y!)!)
+                    let newSaw1 = Saw(pos: CGPoint(x: xf, y: yf))
+                    newSaw1.add(to: self)
+                case "spear":
+                    let x = elem.attributes["X"]
+                    let xf = CGFloat(NumberFormatter().number(from: x!)!)
+                    createSpear(xf: xf)
+                default:
+                    break
+                }
+            }
+            for elem in xmlDoc.root["ground"].children{
+                let x = elem.attributes["X"]
+                let xf = CGFloat(NumberFormatter().number(from: x!)!)
+                let y = elem.attributes["Y"]
+                let yf = CGFloat(NumberFormatter().number(from: y!)!)
+                let point = CGPoint(x: xf, y: yf)
+                xyGround.append(point)
+            }
+            createGroundxml()
+        }
+        catch{
+            print("error")
+        }
     }
     
     

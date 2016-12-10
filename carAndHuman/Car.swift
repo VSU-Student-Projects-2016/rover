@@ -76,14 +76,14 @@ class Car: SKNode{
         
         spring1.physicsBody = SKPhysicsBody(rectangleOf: CGSize(width: 10, height: 90))
         spring1.fillColor = SKColor.red
-        spring1.zPosition = 10
+        spring1.zPosition = -1
         spring1.physicsBody?.isDynamic = true
         spring1.physicsBody?.categoryBitMask = springCategory
         spring1.physicsBody?.collisionBitMask = groundCategory
         
         spring2.physicsBody = SKPhysicsBody(rectangleOf: CGSize(width: 10, height: 90))
         spring2.fillColor = SKColor.red
-        spring2.zPosition = 10
+        spring2.zPosition = -1
         spring2.physicsBody?.isDynamic = true
         spring2.physicsBody?.categoryBitMask = springCategory
         spring2.physicsBody?.collisionBitMask = groundCategory
@@ -93,9 +93,9 @@ class Car: SKNode{
     }
     
     func add(to scene: SKScene) {
-        bodyCar.position = CGPoint(x: -150, y: 85)
-        circle1.position = CGPoint(x: bodyCar.position.x - 80, y: bodyCar.position.y - 50)
-        circle2.position = CGPoint(x: bodyCar.position.x + 80, y: bodyCar.position.y - 50)
+        bodyCar.position = CGPoint(x: 150, y: 300)
+        circle1.position = CGPoint(x: bodyCar.position.x - 80, y: bodyCar.position.y - 70)
+        circle2.position = CGPoint(x: bodyCar.position.x + 80, y: bodyCar.position.y - 70)
         
         spring1.position = CGPoint(x: circle1.position.x, y: circle1.position.y + 20)
         spring2.position = CGPoint(x: circle2.position.x, y: circle2.position.y + 20)

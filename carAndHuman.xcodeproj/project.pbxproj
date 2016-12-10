@@ -11,6 +11,14 @@
 		2CC9A88F1DCB928A00041B4F /* blood.sks in Resources */ = {isa = PBXBuildFile; fileRef = 2CC9A88D1DCB928A00041B4F /* blood.sks */; };
 		2CC9A8901DCB928A00041B4F /* spark.png in Resources */ = {isa = PBXBuildFile; fileRef = 2CC9A88E1DCB928A00041B4F /* spark.png */; };
 		2CC9A8921DCBB0D600041B4F /* smoke.sks in Resources */ = {isa = PBXBuildFile; fileRef = 2CC9A8911DCBB0D600041B4F /* smoke.sks */; };
+		AE020BA61DFBFD3D00CE93E5 /* Document.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE020BA11DFBFD3D00CE93E5 /* Document.swift */; };
+		AE020BA71DFBFD3D00CE93E5 /* Element.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE020BA21DFBFD3D00CE93E5 /* Element.swift */; };
+		AE020BA81DFBFD3D00CE93E5 /* Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE020BA31DFBFD3D00CE93E5 /* Error.swift */; };
+		AE020BA91DFBFD3D00CE93E5 /* Options.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE020BA41DFBFD3D00CE93E5 /* Options.swift */; };
+		AE020BAA1DFBFD3D00CE93E5 /* Parser.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE020BA51DFBFD3D00CE93E5 /* Parser.swift */; };
+		AE020BAD1DFC055700CE93E5 /* lvlGame1.xml in Resources */ = {isa = PBXBuildFile; fileRef = AE020BAC1DFC055700CE93E5 /* lvlGame1.xml */; };
+		AE05F12C1DFC13EB00479605 /* lvlGame2.xml in Resources */ = {isa = PBXBuildFile; fileRef = AE05F12B1DFC13EB00479605 /* lvlGame2.xml */; };
+		AE05F12E1DFC170600479605 /* lvlGame3.xml in Resources */ = {isa = PBXBuildFile; fileRef = AE05F12D1DFC170600479605 /* lvlGame3.xml */; };
 		AE21ABDE1DE04DF2007219A4 /* Spear.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE21ABDD1DE04DF2007219A4 /* Spear.swift */; };
 		AE2A22561DE04DFD00D7C0E0 /* Rock.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE2A22551DE04DFD00D7C0E0 /* Rock.swift */; };
 		AE3B08EF1DF2F543003220B0 /* MenuScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE3B08EE1DF2F543003220B0 /* MenuScene.swift */; };
@@ -35,6 +43,14 @@
 		2CC9A88D1DCB928A00041B4F /* blood.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = blood.sks; sourceTree = "<group>"; };
 		2CC9A88E1DCB928A00041B4F /* spark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = spark.png; sourceTree = "<group>"; };
 		2CC9A8911DCBB0D600041B4F /* smoke.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = smoke.sks; sourceTree = "<group>"; };
+		AE020BA11DFBFD3D00CE93E5 /* Document.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Document.swift; sourceTree = "<group>"; };
+		AE020BA21DFBFD3D00CE93E5 /* Element.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Element.swift; sourceTree = "<group>"; };
+		AE020BA31DFBFD3D00CE93E5 /* Error.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Error.swift; sourceTree = "<group>"; };
+		AE020BA41DFBFD3D00CE93E5 /* Options.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Options.swift; sourceTree = "<group>"; };
+		AE020BA51DFBFD3D00CE93E5 /* Parser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Parser.swift; sourceTree = "<group>"; };
+		AE020BAC1DFC055700CE93E5 /* lvlGame1.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = lvlGame1.xml; sourceTree = "<group>"; };
+		AE05F12B1DFC13EB00479605 /* lvlGame2.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = lvlGame2.xml; sourceTree = "<group>"; };
+		AE05F12D1DFC170600479605 /* lvlGame3.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = lvlGame3.xml; sourceTree = "<group>"; };
 		AE21ABDD1DE04DF2007219A4 /* Spear.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Spear.swift; sourceTree = "<group>"; };
 		AE2A22551DE04DFD00D7C0E0 /* Rock.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Rock.swift; sourceTree = "<group>"; };
 		AE3B08EE1DF2F543003220B0 /* MenuScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuScene.swift; sourceTree = "<group>"; };
@@ -67,6 +83,18 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		AE020BAB1DFBFD4C00CE93E5 /* aexml */ = {
+			isa = PBXGroup;
+			children = (
+				AE020BA11DFBFD3D00CE93E5 /* Document.swift */,
+				AE020BA21DFBFD3D00CE93E5 /* Element.swift */,
+				AE020BA31DFBFD3D00CE93E5 /* Error.swift */,
+				AE020BA41DFBFD3D00CE93E5 /* Options.swift */,
+				AE020BA51DFBFD3D00CE93E5 /* Parser.swift */,
+			);
+			name = aexml;
+			sourceTree = "<group>";
+		};
 		AEBD3AFB1DA902AA00A8BEE1 = {
 			isa = PBXGroup;
 			children = (
@@ -98,6 +126,7 @@
 				AEBD3B161DA902AA00A8BEE1 /* LaunchScreen.storyboard */,
 				AEBD3B191DA902AA00A8BEE1 /* Info.plist */,
 				2CA22E491DCA9F690003B5F8 /* Saw.swift */,
+				AE020BAB1DFBFD4C00CE93E5 /* aexml */,
 				2CC9A88D1DCB928A00041B4F /* blood.sks */,
 				2CC9A88E1DCB928A00041B4F /* spark.png */,
 				2CC9A8911DCBB0D600041B4F /* smoke.sks */,
@@ -108,6 +137,9 @@
 				AE499F171DE0594000893427 /* Platform.swift */,
 				AE3B08EE1DF2F543003220B0 /* MenuScene.swift */,
 				AE3B08F01DF2F8B2003220B0 /* MenuScene.sks */,
+				AE05F12D1DFC170600479605 /* lvlGame3.xml */,
+				AE05F12B1DFC13EB00479605 /* lvlGame2.xml */,
+				AE020BAC1DFC055700CE93E5 /* lvlGame1.xml */,
 			);
 			path = carAndHuman;
 			sourceTree = "<group>";
@@ -172,8 +204,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				AEBD3B131DA902AA00A8BEE1 /* Main.storyboard in Resources */,
+				AE05F12C1DFC13EB00479605 /* lvlGame2.xml in Resources */,
 				AE79ABEC1DC4986C00344BF6 /* GameScene.sks in Resources */,
 				2CC9A88F1DCB928A00041B4F /* blood.sks in Resources */,
+				AE020BAD1DFC055700CE93E5 /* lvlGame1.xml in Resources */,
+				AE05F12E1DFC170600479605 /* lvlGame3.xml in Resources */,
 				AE3B08F11DF2F8B2003220B0 /* MenuScene.sks in Resources */,
 				2CC9A8901DCB928A00041B4F /* spark.png in Resources */,
 				AEA57B8A1DCDFAC3009BE9CD /* diamondRemove.sks in Resources */,
@@ -194,13 +229,18 @@
 				AEBD3B0E1DA902AA00A8BEE1 /* GameScene.swift in Sources */,
 				AE21ABDE1DE04DF2007219A4 /* Spear.swift in Sources */,
 				AE3B08EF1DF2F543003220B0 /* MenuScene.swift in Sources */,
+				AE020BA71DFBFD3D00CE93E5 /* Element.swift in Sources */,
+				AE020BAA1DFBFD3D00CE93E5 /* Parser.swift in Sources */,
 				AEBD3B101DA902AA00A8BEE1 /* GameViewController.swift in Sources */,
 				AE79ABF01DC4AEA900344BF6 /* Human.swift in Sources */,
 				2CA22E4A1DCA9F690003B5F8 /* Saw.swift in Sources */,
 				AE79ABEE1DC4AE7F00344BF6 /* Car.swift in Sources */,
 				AE2A22561DE04DFD00D7C0E0 /* Rock.swift in Sources */,
+				AE020BA61DFBFD3D00CE93E5 /* Document.swift in Sources */,
 				AE87D8201DCDDA9B0029A1C1 /* Petrol.swift in Sources */,
 				AE499F181DE0594000893427 /* Platform.swift in Sources */,
+				AE020BA81DFBFD3D00CE93E5 /* Error.swift in Sources */,
+				AE020BA91DFBFD3D00CE93E5 /* Options.swift in Sources */,
 				AEBD3B081DA902AA00A8BEE1 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
