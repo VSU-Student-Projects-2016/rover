@@ -27,6 +27,7 @@ let spearCategory: UInt32 = 1 << 15
 let spearHeadCategory: UInt32 = 1 << 16
 let rockCategory: UInt32 = 1 << 17
 let platformCategory: UInt32 = 1 << 18
+let petrolCategory: UInt32 = 1 << 19
 
 class GameScene: SKScene, SKPhysicsContactDelegate {
     
@@ -50,7 +51,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var wheelCar: SKPhysicsBody!
     var accelerator: SKShapeNode!
     var brakePedal: SKShapeNode!
-    
+    var gameover: UIView?
+    var replayButton: UIButton!
     
     var xyGround = [CGPoint]()
     var isBrake = false
@@ -75,8 +77,15 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     override func didMove(to view: SKView) {
         self.physicsWorld.gravity = CGVector(dx: 0.0, dy: -5.0)
         self.physicsWorld.contactDelegate = self
-        
         self.backgroundColor = SKColor.blue
+        
+        gameover = UIView()
+        
+        replayButton = UIButton(frame: CGRect(x:  self.frame.midX - 250, y: self.frame.midY, width: 100.0, height: 100.0))
+        replayButton.setTitle("Replay", for: .normal)
+        replayButton.setTitleColor(.green, for: .normal)
+        replayButton.titleLabel!.font = UIFont(name: "PressStart2P", size: 14)
+        replayButton.addTarget(self, action: #selector(self.replayButtonPressed(_:)), for: .touchUpInside)
         
         let wait = SKAction.wait(forDuration: 0.5)
         let block = SKAction.run({() in
@@ -140,8 +149,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 self.newSpear = Spear(pos: position)
                 self.newSpear.add(to: self)
             }
-        }
-
+        } 
     }
     
     func resetScene(){
@@ -280,9 +288,34 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         isBrake = false
     }
     
+    func replayButtonPressed(_ sender: UIButton!){
+        gameover!.removeFromSuperview()
+        gameover = nil
+        
+        let scene = GameScene(size: self.size)
+        let skView = self.view as SKView!
+        skView?.ignoresSiblingOrder = true
+        scene.scaleMode = .resizeFill
+        scene.size = (skView?.bounds.size)!
+        skView?.presentScene(scene)
+    }
+    
+    func gameOver(){
+        gameover?.backgroundColor = UIColor.init(red: 0.5, green: 0.5, blue: 0.5, alpha: 0.5)
+        gameover?.sizeThatFits(self.frame.size)
+        //exitButton.frame.origin = CGPoint(x: self.frame.midX + 50, y: self.frame.midY + 100)
+        replayButton.frame.origin = CGPoint(x: self.view!.frame.width/2 - 50, y: self.view!.frame.height/2 - 50)
+        //gameover?.addSubview(exitButton)
+        gameover?.addSubview(replayButton)
+        gameover?.frame = self.view!.frame
+        self.view?.addSubview(gameover!)
+    }
     
     override func update(_ currentTime: TimeInterval) {
         petrol.updatePetrol()
+        if petrol.count < 0{
+            gameOver()
+        }
         arrow.zRotation = wheelCar.angularVelocity / 20
         if !reset{
             if camCar{
@@ -297,7 +330,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             resetScene()
         }
         
-        if isTouch && notContact && wheelCar.angularVelocity < 5{
+        if isTouch && notContact{
             petrol.expenditure()
             speedCar += 50
             myNewCar.run(speed: speedCar)
@@ -380,6 +413,17 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
     }
     
+    func createPetrol(pos: CGPoint){
+        let petTexture = SKTexture(imageNamed: "gasoline")
+        let pet = SKSpriteNode(texture: petTexture)
+        pet.physicsBody = SKPhysicsBody(texture: petTexture, size: petTexture.size())
+        pet.physicsBody?.categoryBitMask = petrolCategory
+        pet.physicsBody?.isDynamic = false
+        pet.physicsBody?.contactTestBitMask = carCategory | bodyCategory | arm1Category | arm2Category | leg1Category | leg2Category | headCategory
+        pet.position = pos
+        addChild(pet)
+    }
+    
     func createGroundxml(){
         let groundPath = UIBezierPath()
         groundPath.move(to: xyGround[0])
@@ -406,7 +450,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     func createLevel(){
         let opt = AEXMLOptions()
         guard
-            let xmlPath = Bundle.main.path(forResource: "lvlGame3", ofType: "xml"),
+            let xmlPath = Bundle.main.path(forResource: "lvlGame4", ofType: "xml"),
             let data = try? Data(contentsOf: URL(fileURLWithPath: xmlPath))
         else {return}
         
@@ -423,10 +467,35 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                     let yf = CGFloat(NumberFormatter().number(from: y!)!)
                     let newSaw1 = Saw(pos: CGPoint(x: xf, y: yf))
                     newSaw1.add(to: self)
+                    break
                 case "spear":
                     let x = elem.attributes["X"]
                     let xf = CGFloat(NumberFormatter().number(from: x!)!)
                     createSpear(xf: xf)
+                    break
+                case "petrol":
+                    let x = elem.attributes["X"]
+                    let xf = CGFloat(NumberFormatter().number(from: x!)!)
+                    let y = elem.attributes["Y"]
+                    let yf = CGFloat(NumberFormatter().number(from: y!)!)
+                    let point  = CGPoint(x: xf, y: yf)
+                    createPetrol(pos: point)
+                    break
+                case "diamond":
+                    let x = elem.attributes["X"]
+                    let xf = CGFloat(NumberFormatter().number(from: x!)!)
+                    let y = elem.attributes["Y"]
+                    let yf = CGFloat(NumberFormatter().number(from: y!)!)
+                    let point = CGPoint(x: xf, y: yf)
+                    spawnDiamonds(pos: point)
+                    break
+                case "pipe":
+                    let x = elem.attributes["X"]
+                    let xf = CGFloat(NumberFormatter().number(from: x!)!)
+                    let y = elem.attributes["Y"]
+                    let yf = CGFloat(NumberFormatter().number(from: y!)!)
+                    let point = CGPoint(x: xf, y: yf)
+                    spawnPipe(position: point)
                 default:
                     break
                 }
@@ -449,6 +518,17 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     
     func didBegin(_ contact: SKPhysicsContact) {
+        if contact.bodyA.categoryBitMask == petrolCategory || contact.bodyB.categoryBitMask == petrolCategory{
+            if contact.bodyA.categoryBitMask == petrolCategory{
+                contact.bodyA.node?.removeFromParent()
+            }
+            if contact.bodyB.categoryBitMask == petrolCategory{
+                contact.bodyB.node?.removeFromParent()
+            }
+            petrol.addPetrol()
+        }
+
+        
         if isSpear && (contact.bodyA.categoryBitMask == spearHeadCategory || contact.bodyB.categoryBitMask == spearHeadCategory) {
             let manCategory: UInt32
             var jointManSpear: SKPhysicsJointSliding
@@ -502,14 +582,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
         
         if notContact && (contact.bodyA.categoryBitMask == pipeCategory || contact.bodyB.categoryBitMask == pipeCategory){
-            if contact.collisionImpulse > 1400{
+            if contact.collisionImpulse > 1000{
                 let impulse = speedCar
                 //print(impulse)
                 //print(contact.collisionImpulse)
                 notContact = false
                 speedCar = 0
                 myNewCar.run(speed: speedCar)
-                myNewCar.bodyCar.physicsBody?.applyImpulse(CGVector(dx: -impulse, dy: 100))
+                myNewCar.bodyCar.physicsBody?.applyImpulse(CGVector(dx: 50, dy: 100))
             
                 camCar = false
             

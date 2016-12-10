@@ -1,0 +1,73 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<head>
+  <elements>
+    <pipe X="2637" Y="328" />
+    <saw X="3255" Y="452" />
+    <saw X="3072" Y="501" />
+    <spear X="3494" Y="339" />
+    <petrol X="3783" Y="421" />
+    <petrol X="3263" Y="526" />
+    <diamond X="3238" Y="310" />
+    <diamond X="3512" Y="386" />
+    <diamond X="3355" Y="466" />
+  </elements>
+  <ground>
+    <Point X="55" Y="75" />
+    <Point X="152" Y="62" />
+    <Point X="239" Y="58" />
+    <Point X="340" Y="52" />
+    <Point X="428" Y="58" />
+    <Point X="542" Y="63" />
+    <Point X="665" Y="56" />
+    <Point X="740" Y="71" />
+    <Point X="835" Y="116" />
+    <Point X="910" Y="130" />
+    <Point X="1031" Y="133" />
+    <Point X="1124" Y="146" />
+    <Point X="1183" Y="142" />
+    <Point X="1252" Y="125" />
+    <Point X="1411" Y="140" />
+    <Point X="1488" Y="182" />
+    <Point X="1576" Y="203" />
+    <Point X="1659" Y="224" />
+    <Point X="1758" Y="221" />
+    <Point X="1945" Y="161" />
+    <Point X="2043" Y="163" />
+    <Point X="2150" Y="188" />
+    <Point X="2257" Y="211" />
+    <Point X="2355" Y="213" />
+    <Point X="2479" Y="220" />
+    <Point X="2549" Y="228" />
+    <Point X="2633" Y="260" />
+    <Point X="2718" Y="260" />
+    <Point X="2749" Y="259" />
+    <Point X="2798" Y="262" />
+    <Point X="2959" Y="208" />
+    <Point X="3021" Y="183" />
+    <Point X="3140" Y="163" />
+    <Point X="3253" Y="159" />
+    <Point X="3300" Y="172" />
+    <Point X="3375" Y="217" />
+    <Point X="3451" Y="261" />
+    <Point X="3511" Y="272" />
+    <Point X="3556" Y="271" />
+    <Point X="3609" Y="267" />
+    <Point X="3822" Y="253" />
+    <Point X="3902" Y="285" />
+    <Point X="4324" Y="265" />
+    <Point X="4374" Y="291" />
+    <Point X="4484" Y="306" />
+    <Point X="4974" Y="303" />
+    <Point X="5045" Y="311" />
+    <Point X="5114" Y="323" />
+    <Point X="5165" Y="308" />
+    <Point X="5526" Y="248" />
+    <Point X="5604" Y="253" />
+    <Point X="5665" Y="269" />
+    <Point X="5765" Y="292" />
+    <Point X="5811" Y="207" />
+    <Point X="5799" Y="91" />
+    <Point X="5796" Y="51" />
+    <Point X="5796" Y="26" />
+  </ground>
+</head>

@@ -19,6 +19,7 @@
 		AE020BAD1DFC055700CE93E5 /* lvlGame1.xml in Resources */ = {isa = PBXBuildFile; fileRef = AE020BAC1DFC055700CE93E5 /* lvlGame1.xml */; };
 		AE05F12C1DFC13EB00479605 /* lvlGame2.xml in Resources */ = {isa = PBXBuildFile; fileRef = AE05F12B1DFC13EB00479605 /* lvlGame2.xml */; };
 		AE05F12E1DFC170600479605 /* lvlGame3.xml in Resources */ = {isa = PBXBuildFile; fileRef = AE05F12D1DFC170600479605 /* lvlGame3.xml */; };
+		AE05F1301DFC1E5C00479605 /* lvlGame4.xml in Resources */ = {isa = PBXBuildFile; fileRef = AE05F12F1DFC1E5C00479605 /* lvlGame4.xml */; };
 		AE21ABDE1DE04DF2007219A4 /* Spear.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE21ABDD1DE04DF2007219A4 /* Spear.swift */; };
 		AE2A22561DE04DFD00D7C0E0 /* Rock.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE2A22551DE04DFD00D7C0E0 /* Rock.swift */; };
 		AE3B08EF1DF2F543003220B0 /* MenuScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE3B08EE1DF2F543003220B0 /* MenuScene.swift */; };
@@ -51,6 +52,7 @@
 		AE020BAC1DFC055700CE93E5 /* lvlGame1.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = lvlGame1.xml; sourceTree = "<group>"; };
 		AE05F12B1DFC13EB00479605 /* lvlGame2.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = lvlGame2.xml; sourceTree = "<group>"; };
 		AE05F12D1DFC170600479605 /* lvlGame3.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = lvlGame3.xml; sourceTree = "<group>"; };
+		AE05F12F1DFC1E5C00479605 /* lvlGame4.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = lvlGame4.xml; sourceTree = "<group>"; };
 		AE21ABDD1DE04DF2007219A4 /* Spear.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Spear.swift; sourceTree = "<group>"; };
 		AE2A22551DE04DFD00D7C0E0 /* Rock.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Rock.swift; sourceTree = "<group>"; };
 		AE3B08EE1DF2F543003220B0 /* MenuScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuScene.swift; sourceTree = "<group>"; };
@@ -137,6 +139,7 @@
 				AE499F171DE0594000893427 /* Platform.swift */,
 				AE3B08EE1DF2F543003220B0 /* MenuScene.swift */,
 				AE3B08F01DF2F8B2003220B0 /* MenuScene.sks */,
+				AE05F12F1DFC1E5C00479605 /* lvlGame4.xml */,
 				AE05F12D1DFC170600479605 /* lvlGame3.xml */,
 				AE05F12B1DFC13EB00479605 /* lvlGame2.xml */,
 				AE020BAC1DFC055700CE93E5 /* lvlGame1.xml */,
@@ -210,6 +213,7 @@
 				AE020BAD1DFC055700CE93E5 /* lvlGame1.xml in Resources */,
 				AE05F12E1DFC170600479605 /* lvlGame3.xml in Resources */,
 				AE3B08F11DF2F8B2003220B0 /* MenuScene.sks in Resources */,
+				AE05F1301DFC1E5C00479605 /* lvlGame4.xml in Resources */,
 				2CC9A8901DCB928A00041B4F /* spark.png in Resources */,
 				AEA57B8A1DCDFAC3009BE9CD /* diamondRemove.sks in Resources */,
 				AEBD3B151DA902AA00A8BEE1 /* Assets.xcassets in Resources */,
