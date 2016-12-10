@@ -28,8 +28,13 @@ class Petrol: SKNode{
         pn.position = pos
         pn.addChild(petrol)
     }
-    func add(to scene: SKScene){
-        
+    func addPetrol(){
+        count = count + 0.3
+        petrol.position = CGPoint(x: petrol.position.x + 15, y: petrol.position.y)
+        if count > 1{
+            count = 1.0
+            petrol.position = CGPoint(x: 0, y: 0)
+        }
     }
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
