@@ -30,6 +30,9 @@ let platformCategory: UInt32 = 1 << 18
 let petrolCategory: UInt32 = 1 << 19
 let bgGameSound : SKAudioNode = SKAudioNode.init(fileNamed: "Sun_Spots")
 
+let btnMenuTexture = SKTexture(imageNamed: "menu")
+let btnMenu = SKSpriteNode(texture: btnMenuTexture)
+
 class GameScene: SKScene, SKPhysicsContactDelegate {
     
     var myNewMan: Human!
@@ -75,6 +78,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var timerLast = 0
     let zero: CGFloat = 0.0
     var lvlName:String = ""
+    
+
 
     init(size: CGSize, lvl: String){
         super.init(size: size)
@@ -86,6 +91,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     override func didMove(to view: SKView) {
+        
+
         self.physicsWorld.gravity = CGVector(dx: 0.0, dy: -5.0)
         self.physicsWorld.contactDelegate = self
         self.backgroundColor = SKColor.blue
@@ -127,13 +134,18 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         score = SKLabelNode(text: "0")
         score.fontSize = 50
-        score.position = CGPoint(x: cam.position.x +  100, y: cam.position.y +  100)
+        //score.position = CGPoint(x: cam.position.x +  100, y: cam.position.y +  100)
         score.position = CGPoint(x: 270, y: 180)
         createLevel()
         cam.addChild(score)
         
         //background sound
         self.addChild(bgGameSound)
+        
+        btnMenu.scale(to: CGSize(width: 60, height: 60))
+        btnMenu.position = CGPoint(x: -320, y: 200)
+        cam.addChild(btnMenu)
+        
     }
     
     func createSpear(xf: CGFloat){
@@ -263,17 +275,38 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        
         for touch: AnyObject in touches {
             let location = touch.location(in: cam)
             if accelerator.contains(location) {
                 isTouch = true
             }
-            else{
-                if brakePedal.contains(location){
-                    isBrake = true
-                }
+            
+            if brakePedal.contains(location){
+                isBrake = true
+            }
+            
+            if btnMenu.contains(location) {
+                backMenu()
             }
         }
+    }
+    
+    func backMenu(){
+        let menuScene = MenuScene(size: self.size)
+        // Configure the view.
+        view!.showsFPS = true
+        view!.showsNodeCount = true
+        
+        /* Sprite Kit applies additional optimizations to improve rendering performance */
+        view!.ignoresSiblingOrder = true
+        
+        /* Set the scale mode to scale to fit the window */
+        menuScene.scaleMode = .aspectFill
+        
+        //scene.setLevel(levelName: level)
+        
+        view!.presentScene(menuScene)
     }
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
