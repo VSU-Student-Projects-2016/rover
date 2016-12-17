@@ -64,9 +64,9 @@ class MenuScene: SKScene {
             let location = touch.location(in: self)
             
             if buttonPlay.contains(location) {
-                //startGame()
-                containerLevels.run(SKAction.move(to: CGPoint(x: -275, y: 0), duration: 0.5))
-                buttonPlay.run(SKAction.move(to: CGPoint(x: -450, y: 0), duration: 0.3))
+                startGame()
+                //containerLevels.run(SKAction.move(to: CGPoint(x: -275, y: 0), duration: 0.5))
+                //buttonPlay.run(SKAction.move(to: CGPoint(x: -450, y: 0), duration: 0.3))
             }
             
             let location1 = touch.location(in: containerLevels)

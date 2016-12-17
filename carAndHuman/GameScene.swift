@@ -8,6 +8,7 @@
 import SpriteKit
 import GameplayKit
 import Foundation
+import AVFoundation
 
 let carCategory: UInt32 = 1 << 0
 let groundCategory: UInt32 = 1 << 1
@@ -78,6 +79,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         self.physicsWorld.gravity = CGVector(dx: 0.0, dy: -5.0)
         self.physicsWorld.contactDelegate = self
         self.backgroundColor = SKColor.blue
+        
         
         gameover = UIView()
         
@@ -173,26 +175,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
             scoreCount = 0
             score.text = "0"
-            var xDiamond: CGFloat = 0.0
-            while xDiamond < widthGround{
-                self.physicsWorld.enumerateBodies(alongRayStart: CGPoint(x: xDiamond, y: 800), end: CGPoint(x: xDiamond, y: 0)) { (b:SKPhysicsBody, position: CGPoint, vector: CGVector, boolPointer: UnsafeMutablePointer<ObjCBool>) in
-                    if b.categoryBitMask == dsCategory{
-                        b.node?.removeFromParent()
-                    }
-                }
-                xDiamond = xDiamond + 300
-            }
-            xDiamond = 0.0
-            while xDiamond < widthGround{
-                self.physicsWorld.enumerateBodies(alongRayStart: CGPoint(x: xDiamond, y: 800), end: CGPoint(x: xDiamond, y: 0)) { (b:SKPhysicsBody, position: CGPoint, vector: CGVector, boolPointer: UnsafeMutablePointer<ObjCBool>) in
-                    if b.categoryBitMask == groundCategory{
-                        self.spawnDiamonds(pos: CGPoint(x: position.x, y: position.y + 100))
-                    }
-                }
-                xDiamond = xDiamond + 300
-            }
-
-        
+            
         cam.run(SKAction.sequence([SKAction.move(to: myNewCar.circle2.position, duration: 5), resetCam]))
     }
     
@@ -295,8 +278,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         let scene = GameScene(size: self.size)
         let skView = self.view as SKView!
         skView?.ignoresSiblingOrder = true
-        scene.scaleMode = .resizeFill
-        scene.size = (skView?.bounds.size)!
+        scene.scaleMode = .aspectFill
+        //scene.size = (skView?.bounds.size)!
         skView?.presentScene(scene)
     }
     
