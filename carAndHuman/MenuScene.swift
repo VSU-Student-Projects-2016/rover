@@ -24,6 +24,7 @@ var positionLevels = 0
 var positionStart = 0
 
 var containerLevels:SKNode!
+var countLevels:Int = 4
 
 class MenuScene: SKScene {
     
@@ -34,7 +35,7 @@ class MenuScene: SKScene {
         
         self.addChild(buttonPlay)
         var i:Int = 0
-        while i < 6 {
+        while i < countLevels {
             arr.append(SKSpriteNode(texture: btnLevelTexture))
             arr[i].position = CGPoint(x: positionLevels + i * 110, y: 20)
             arr[i].scale(to: CGSize(width: 100 , height: 100))
@@ -50,13 +51,7 @@ class MenuScene: SKScene {
         self.addChild(containerLevels)
     }
     
-    func shiftMenu(){
-        var i:Int = 0
-        while i < 6 {
-            arr[i].position = CGPoint(x: positionLevels + i * 110, y: 20)
-            i+=1
-        }
-    }
+
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         for touch: AnyObject in touches {
@@ -76,13 +71,23 @@ class MenuScene: SKScene {
                 buttonPlay.run(SKAction.move(to: CGPoint(x: 0, y: 0), duration: 0.5))
 
             }
+
+            var i:Int = 0
+            for item in arr {
+                i += 1
+                if item.contains(location1){
+                    startGame(level: "lvlGame" + String(i))
+                }
+            }
+            
+            
             
         }
     }
-    func startGame(){
-        let transition:SKTransition = SKTransition.fade(withDuration: 1)
-        /*let scene:SKScene = GameScene(size: self.size)
-        self.view?.presentScene(scene, transition: transition)*/
+    func startGame(level: String){
+        /*let transition:SKTransition = SKTransition.fade(withDuration: 1)
+        let scene:SKScene = GameScene(size: self.size, lvl: level)
+        self.view?.presentScene(scene, transition: transition)
         if let scene = GameScene.unarchiveFromFileGame("GameScene") as? GameScene {
             // Configure the view.
             view!.showsFPS = true
@@ -94,8 +99,24 @@ class MenuScene: SKScene {
             /* Set the scale mode to scale to fit the window */
             scene.scaleMode = .aspectFill
             
+            //scene.setLevel(levelName: level)
+            
             view!.presentScene(scene)
            
-        }
+        }*/
+        let gameScene = GameScene(size: self.size, lvl: level)
+        // Configure the view.
+        view!.showsFPS = true
+        view!.showsNodeCount = true
+        
+        /* Sprite Kit applies additional optimizations to improve rendering performance */
+        view!.ignoresSiblingOrder = true
+        
+        /* Set the scale mode to scale to fit the window */
+        gameScene.scaleMode = .aspectFill
+        
+        //scene.setLevel(levelName: level)
+        
+        view!.presentScene(gameScene)
     }
 }

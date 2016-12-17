@@ -73,6 +73,20 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var timers = [Int]()
     var timerLast = 0
     let zero: CGFloat = 0.0
+    var lvlName:String = ""
+   //
+   // func setLevel (levelName: String){
+   //     lvlName = levelName
+   // }
+    
+    init(size: CGSize, lvl: String){
+        super.init(size: size)
+        lvlName = lvl
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func didMove(to view: SKView) {
         self.physicsWorld.gravity = CGVector(dx: 0.0, dy: -5.0)
@@ -292,7 +306,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         gameover!.removeFromSuperview()
         gameover = nil
         
-        let scene = GameScene(size: self.size)
+        let scene = GameScene(size: self.size,lvl: self.lvlName)
         let skView = self.view as SKView!
         skView?.ignoresSiblingOrder = true
         scene.scaleMode = .resizeFill
@@ -450,7 +464,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     func createLevel(){
         let opt = AEXMLOptions()
         guard
-            let xmlPath = Bundle.main.path(forResource: "lvlGame4", ofType: "xml"),
+            let xmlPath = Bundle.main.path(forResource: lvlName, ofType: "xml"),
             let data = try? Data(contentsOf: URL(fileURLWithPath: xmlPath))
         else {return}
         
@@ -583,7 +597,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         if notContact && (contact.bodyA.categoryBitMask == pipeCategory || contact.bodyB.categoryBitMask == pipeCategory){
             if contact.collisionImpulse > 1000{
-                let impulse = speedCar
+                //let impulse = speedCar
                 //print(impulse)
                 //print(contact.collisionImpulse)
                 notContact = false
