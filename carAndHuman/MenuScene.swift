@@ -24,11 +24,11 @@ var positionLevels = 0
 var positionStart = 0
 
 var containerLevels:SKNode!
-var countLevels:Int = 4
+var countLevels:Int = 6
+
+let bgSound : SKAudioNode = SKAudioNode.init(fileNamed: "Whiskey")
 
 class MenuScene: SKScene {
-    
-    
     
     override func didMove(to view: SKView) {
         containerLevels = SKNode.init()
@@ -43,15 +43,15 @@ class MenuScene: SKScene {
             i+=1
         }
         
-        
         buttonBack.position.y -= 100
         buttonBack.position.x += 275
         containerLevels.addChild(buttonBack)
         containerLevels.position.x = 600
         self.addChild(containerLevels)
+        
+        //background sound
+        self.addChild(bgSound)
     }
-    
-
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         for touch: AnyObject in touches {
@@ -79,31 +79,9 @@ class MenuScene: SKScene {
                     startGame(level: "lvlGame" + String(i))
                 }
             }
-            
-            
-            
         }
     }
     func startGame(level: String){
-        /*let transition:SKTransition = SKTransition.fade(withDuration: 1)
-        let scene:SKScene = GameScene(size: self.size, lvl: level)
-        self.view?.presentScene(scene, transition: transition)
-        if let scene = GameScene.unarchiveFromFileGame("GameScene") as? GameScene {
-            // Configure the view.
-            view!.showsFPS = true
-            view!.showsNodeCount = true
-            
-            /* Sprite Kit applies additional optimizations to improve rendering performance */
-            view!.ignoresSiblingOrder = true
-            
-            /* Set the scale mode to scale to fit the window */
-            scene.scaleMode = .aspectFill
-            
-            //scene.setLevel(levelName: level)
-            
-            view!.presentScene(scene)
-           
-        }*/
         let gameScene = GameScene(size: self.size, lvl: level)
         // Configure the view.
         view!.showsFPS = true

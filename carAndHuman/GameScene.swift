@@ -28,6 +28,7 @@ let spearHeadCategory: UInt32 = 1 << 16
 let rockCategory: UInt32 = 1 << 17
 let platformCategory: UInt32 = 1 << 18
 let petrolCategory: UInt32 = 1 << 19
+let bgGameSound : SKAudioNode = SKAudioNode.init(fileNamed: "Sun_Spots")
 
 class GameScene: SKScene, SKPhysicsContactDelegate {
     
@@ -74,11 +75,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var timerLast = 0
     let zero: CGFloat = 0.0
     var lvlName:String = ""
-   //
-   // func setLevel (levelName: String){
-   //     lvlName = levelName
-   // }
-    
+
     init(size: CGSize, lvl: String){
         super.init(size: size)
         lvlName = lvl
@@ -108,32 +105,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         run(SKAction.repeatForever(SKAction.sequence([wait, block])))
         
-        //createGround()
-        
-        //spawnPipe(position: CGPoint(x: ground2.position.x + ground2.frame.size.width/2, y: ground2.position.y + ground2.frame.size.height))
-        //spawnPipe(position: CGPoint(x: 8000, y: 50))
-        //newSaw = Saw(pos: CGPoint(x: ground2.position.x + ground2.frame.size.width/2 + 400, y: ground2.position.y + ground2.frame.size.height + 350))
-        //newSaw.add(to: self)
-        
-        /*self.physicsWorld.enumerateBodies(alongRayStart: CGPoint(x: ground2.position.x + ground2.frame.size.width/2 + 1500, y: 800), end: CGPoint(x: ground2.position.x + ground2.frame.size.width/2 + 1500, y: 0)) { (b:SKPhysicsBody, position: CGPoint, vector: CGVector, boolPointer: UnsafeMutablePointer<ObjCBool>) in
-            if b.categoryBitMask == groundCategory{
-                self.newSpear = Spear(pos: position)
-                self.newSpear.add(to: self)
-            }
-        }
-
-        createRocks()
-
-        
-        //newPlatform = Platform(pos: CGPoint(x: 1200, y: 400))
-        //newPlatform.add(to: self)
-        */
         myNewCar = Car()
         myNewCar.add(to: self)
         
         wheelCar = myNewCar.circle1.physicsBody
         
-       // view.showsPhysics = true
         
         cam = SKCameraNode()
         self.camera = cam
@@ -155,6 +131,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         score.position = CGPoint(x: 270, y: 180)
         createLevel()
         cam.addChild(score)
+        
+        //background sound
+        self.addChild(bgGameSound)
     }
     
     func createSpear(xf: CGFloat){
