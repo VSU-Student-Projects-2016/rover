@@ -29,6 +29,10 @@ let spearHeadCategory: UInt32 = 1 << 16
 let rockCategory: UInt32 = 1 << 17
 let platformCategory: UInt32 = 1 << 18
 let petrolCategory: UInt32 = 1 << 19
+let bgGameSound : SKAudioNode = SKAudioNode.init(fileNamed: "Sun_Spots")
+
+let btnMenuTexture = SKTexture(imageNamed: "menu")
+let btnMenu = SKSpriteNode(texture: btnMenuTexture)
 
 class GameScene: SKScene, SKPhysicsContactDelegate {
     
@@ -74,8 +78,22 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var timers = [Int]()
     var timerLast = 0
     let zero: CGFloat = 0.0
+    var lvlName:String = ""
+    
+
+
+    init(size: CGSize, lvl: String){
+        super.init(size: size)
+        lvlName = lvl
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func didMove(to view: SKView) {
+        
+
         self.physicsWorld.gravity = CGVector(dx: 0.0, dy: -5.0)
         self.physicsWorld.contactDelegate = self
         self.backgroundColor = SKColor.blue
@@ -96,32 +114,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         run(SKAction.repeatForever(SKAction.sequence([wait, block])))
         
-        //createGround()
-        
-        //spawnPipe(position: CGPoint(x: ground2.position.x + ground2.frame.size.width/2, y: ground2.position.y + ground2.frame.size.height))
-        //spawnPipe(position: CGPoint(x: 8000, y: 50))
-        //newSaw = Saw(pos: CGPoint(x: ground2.position.x + ground2.frame.size.width/2 + 400, y: ground2.position.y + ground2.frame.size.height + 350))
-        //newSaw.add(to: self)
-        
-        /*self.physicsWorld.enumerateBodies(alongRayStart: CGPoint(x: ground2.position.x + ground2.frame.size.width/2 + 1500, y: 800), end: CGPoint(x: ground2.position.x + ground2.frame.size.width/2 + 1500, y: 0)) { (b:SKPhysicsBody, position: CGPoint, vector: CGVector, boolPointer: UnsafeMutablePointer<ObjCBool>) in
-            if b.categoryBitMask == groundCategory{
-                self.newSpear = Spear(pos: position)
-                self.newSpear.add(to: self)
-            }
-        }
-
-        createRocks()
-
-        
-        //newPlatform = Platform(pos: CGPoint(x: 1200, y: 400))
-        //newPlatform.add(to: self)
-        */
         myNewCar = Car()
         myNewCar.add(to: self)
         
         wheelCar = myNewCar.circle1.physicsBody
         
-       // view.showsPhysics = true
         
         cam = SKCameraNode()
         self.camera = cam
@@ -139,10 +136,18 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         score = SKLabelNode(text: "0")
         score.fontSize = 50
-        score.position = CGPoint(x: cam.position.x +  100, y: cam.position.y +  100)
+        //score.position = CGPoint(x: cam.position.x +  100, y: cam.position.y +  100)
         score.position = CGPoint(x: 270, y: 180)
         createLevel()
         cam.addChild(score)
+        
+        //background sound
+        self.addChild(bgGameSound)
+        
+        btnMenu.scale(to: CGSize(width: 60, height: 60))
+        btnMenu.position = CGPoint(x: -320, y: 200)
+        cam.addChild(btnMenu)
+        
     }
     
     func createSpear(xf: CGFloat){
@@ -253,17 +258,38 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        
         for touch: AnyObject in touches {
             let location = touch.location(in: cam)
             if accelerator.contains(location) {
                 isTouch = true
             }
-            else{
-                if brakePedal.contains(location){
-                    isBrake = true
-                }
+            
+            if brakePedal.contains(location){
+                isBrake = true
+            }
+            
+            if btnMenu.contains(location) {
+                backMenu()
             }
         }
+    }
+    
+    func backMenu(){
+        let menuScene = MenuScene(size: self.size)
+        // Configure the view.
+        view!.showsFPS = true
+        view!.showsNodeCount = true
+        
+        /* Sprite Kit applies additional optimizations to improve rendering performance */
+        view!.ignoresSiblingOrder = true
+        
+        /* Set the scale mode to scale to fit the window */
+        menuScene.scaleMode = .aspectFill
+        
+        //scene.setLevel(levelName: level)
+        
+        view!.presentScene(menuScene)
     }
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -275,7 +301,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         gameover!.removeFromSuperview()
         gameover = nil
         
-        let scene = GameScene(size: self.size)
+        let scene = GameScene(size: self.size,lvl: self.lvlName)
         let skView = self.view as SKView!
         skView?.ignoresSiblingOrder = true
         scene.scaleMode = .aspectFill
@@ -433,7 +459,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     func createLevel(){
         let opt = AEXMLOptions()
         guard
-            let xmlPath = Bundle.main.path(forResource: "lvlGame4", ofType: "xml"),
+            let xmlPath = Bundle.main.path(forResource: lvlName, ofType: "xml"),
             let data = try? Data(contentsOf: URL(fileURLWithPath: xmlPath))
         else {return}
         
@@ -566,7 +592,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         if notContact && (contact.bodyA.categoryBitMask == pipeCategory || contact.bodyB.categoryBitMask == pipeCategory){
             if contact.collisionImpulse > 1000{
-                let impulse = speedCar
+                //let impulse = speedCar
                 //print(impulse)
                 //print(contact.collisionImpulse)
                 notContact = false

@@ -127,15 +127,10 @@ class Car: SKNode{
         bodyCar.addChild(exhaust!)
         bodyCar.addChild(exhaustPipe)
         
-        
-        
         scene.physicsWorld.add(pinCircle1Spring)
         scene.physicsWorld.add(pinCircle2Spring)
         scene.physicsWorld.add(pinCircle1Pin)
         scene.physicsWorld.add(pinCircle2Pin)
-        
-        
-        
     }
     
     
