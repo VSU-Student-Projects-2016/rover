@@ -16,16 +16,17 @@ let btnLevelTexture = SKTexture(imageNamed: "sawImage")
 let btnSoundTexture = SKTexture(imageNamed: "volume-on")
 let btnInfoTexture = SKTexture(imageNamed: "info")
 
-let buttonPlay = SKSpriteNode(texture: buttonTexture)
-let buttonBack = SKSpriteNode(texture: btnBackTexture)
-let buttonSound = SKSpriteNode(texture: btnSoundTexture)
-let buttonInfo = SKSpriteNode(texture: btnInfoTexture)
+
 
 
 class MenuScene: SKScene {
     
+    let buttonPlay = SKSpriteNode(texture: buttonTexture)
+    let buttonBack = SKSpriteNode(texture: btnBackTexture)
+    let buttonSound = SKSpriteNode(texture: btnSoundTexture)
+    let buttonInfo = SKSpriteNode(texture: btnInfoTexture)
     
-        var arr:[SKSpriteNode] = [SKSpriteNode]()
+    var arr:[SKSpriteNode] = [SKSpriteNode]()
     
     let lbNameGame: SKLabelNode = SKLabelNode.init(text: "Name")
     let lbLevels: SKLabelNode = SKLabelNode.init(text: "Levels")
@@ -139,15 +140,29 @@ class MenuScene: SKScene {
         //scene.setLevel(levelName: level)
         
         view!.presentScene(gameScene)*/
-        let scene = GameScene(size: self.size, lvl: level)
-        //let skView = self.view as SKView!
-        
+       
+        if let scene = GameScene.unarchiveFromFileGame("GameScene") as? GameScene {
+            
+            scene.setLevel(lvl: level)
+            
+            // Configure the view.
+            let skView = self.view as SKView!
+            skView?.showsFPS = true
+            skView?.showsNodeCount = true
+            
+            /* Sprite Kit applies additional optimizations to improve rendering performance */
+            skView?.ignoresSiblingOrder = true
+            
+            /* Set the scale mode to scale to fit the window */
+            scene.scaleMode = .aspectFill
+            
+            skView?.presentScene(scene)
+        }
 
-        view!.ignoresSiblingOrder = true
-        scene.scaleMode = .aspectFill
-        
-        //scene.size = (view!.bounds.size)
-
-        view!.presentScene(scene)
+        /*if let view = view {
+            let scene = GameScene.unarchiveFromFileGame("GameScene") as! GameScene
+            scene.scaleMode = SKSceneScaleMode.aspectFill
+            view.presentScene(scene)
+        }*/
     }
 }

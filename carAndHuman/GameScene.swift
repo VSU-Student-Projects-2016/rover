@@ -78,18 +78,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var timers = [Int]()
     var timerLast = 0
     let zero: CGFloat = 0.0
-    var lvlName:String = ""
+    var lvlName:String = "lvlGame4"
     
 
-
-    init(size: CGSize, lvl: String){
-        super.init(size: size)
+    func setLevel(lvl: String){
         lvlName = lvl
     }
-    
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
+
     
     override func didMove(to view: SKView) {
         
@@ -276,28 +271,45 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     func backMenu(){
-        /*let menuScene = MenuScene(size: self.size)
-        // Configure the view.
-        view!.showsFPS = true
-        view!.showsNodeCount = true
+
+        /*if let menuScene = MenuScene.unarchiveFromFile("MenuScene") as? MenuScene {
+
+        //let menuScene = MenuScene(size: self.size)
+        let skView = self.view as SKView!
+        skView?.showsFPS = true
+        skView?.showsNodeCount = true
         
         /* Sprite Kit applies additional optimizations to improve rendering performance */
-        view!.ignoresSiblingOrder = true
+        skView?.ignoresSiblingOrder = true
         
         /* Set the scale mode to scale to fit the window */
         menuScene.scaleMode = .aspectFill
         
-        //scene.setLevel(levelName: level)
-        
-        view!.presentScene(menuScene)*/
-        
-        
-        let scene = MenuScene(size: self.size)
-        let skView = self.view as SKView!
-        skView?.ignoresSiblingOrder = true
-        scene.scaleMode = .aspectFill
-        scene.size = (skView?.bounds.size)!
-        skView?.presentScene(scene)
+        skView?.presentScene(menuScene)
+        }*/
+
+        if let scene = MenuScene.unarchiveFromFile("MenuScene") as? MenuScene {
+            
+            
+            
+            // Configure the view.
+            let skView = self.view as SKView!
+            skView?.showsFPS = true
+            skView?.showsNodeCount = true
+            
+            /* Sprite Kit applies additional optimizations to improve rendering performance */
+            skView?.ignoresSiblingOrder = true
+            
+            /* Set the scale mode to scale to fit the window */
+            scene.scaleMode = .aspectFill
+            
+            skView?.presentScene(scene)
+        }
+        /*if let view = view {
+            let scene = MenuScene.unarchiveFromFile("MenuScene") as! MenuScene
+            scene.scaleMode = SKSceneScaleMode.aspectFill
+            view.presentScene(scene)
+        }*/
     }
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -309,7 +321,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         gameover!.removeFromSuperview()
         gameover = nil
         
-        let scene = GameScene(size: self.size,lvl: self.lvlName)
+        let scene = GameScene(size: self.size)
         let skView = self.view as SKView!
         skView?.ignoresSiblingOrder = true
         scene.scaleMode = .aspectFill
