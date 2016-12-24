@@ -20,23 +20,26 @@ let buttonPlay = SKSpriteNode(texture: buttonTexture)
 let buttonBack = SKSpriteNode(texture: btnBackTexture)
 let buttonSound = SKSpriteNode(texture: btnSoundTexture)
 let buttonInfo = SKSpriteNode(texture: btnInfoTexture)
-var arr:[SKSpriteNode] = [SKSpriteNode]()
 
-let lbNameGame: SKLabelNode = SKLabelNode.init(text: "Name")
-let lbLevels: SKLabelNode = SKLabelNode.init(text: "Levels")
-var NumColumns = 27
-var NumRows = 52
-var positionLevels = 0
-var positionStart = 0
-
-var containerLevels:SKNode!
-var countLevels:Int = 6
-
-var containerMenu:SKNode!
-
-let bgSound : SKAudioNode = SKAudioNode.init(fileNamed: "Whiskey")
 
 class MenuScene: SKScene {
+    
+    
+        var arr:[SKSpriteNode] = [SKSpriteNode]()
+    
+    let lbNameGame: SKLabelNode = SKLabelNode.init(text: "Name")
+    let lbLevels: SKLabelNode = SKLabelNode.init(text: "Levels")
+    var NumColumns = 27
+    var NumRows = 52
+    var positionLevels = 0
+    var positionStart = 0
+    
+    var containerLevels:SKNode!
+    let countLevels:Int = 4
+    
+    var containerMenu:SKNode!
+    
+    let bgSound : SKAudioNode = SKAudioNode.init(fileNamed: "Whiskey")
     
     override func didMove(to view: SKView) {
         
@@ -63,13 +66,16 @@ class MenuScene: SKScene {
         
         containerLevels = SKNode.init()
         var i:Int = 0
-        while i < countLevels {
-            arr.append(SKSpriteNode(texture: btnLevelTexture))
-            arr[i].position = CGPoint(x: positionLevels + i * 110, y: 20)
-            arr[i].scale(to: CGSize(width: 100 , height: 100))
-            containerLevels.addChild(arr[i])
-            i+=1
+        if (arr.count == 0){
+            while i < countLevels {
+                arr.append(SKSpriteNode(texture: btnLevelTexture))
+                arr[i].position = CGPoint(x: positionLevels + i * 110, y: 20)
+                arr[i].scale(to: CGSize(width: 100 , height: 100))
+                containerLevels.addChild(arr[i])
+                i+=1
+            }
         }
+        
         buttonBack.position.y -= 100
         buttonBack.position.x += 275
         
@@ -119,7 +125,7 @@ class MenuScene: SKScene {
         }
     }
     func startGame(level: String){
-        let gameScene = GameScene(size: self.size, lvl: level)
+        /*let gameScene = GameScene(size: self.size, lvl: level)
         // Configure the view.
         view!.showsFPS = true
         view!.showsNodeCount = true
@@ -132,6 +138,16 @@ class MenuScene: SKScene {
         
         //scene.setLevel(levelName: level)
         
-        view!.presentScene(gameScene)
+        view!.presentScene(gameScene)*/
+        let scene = GameScene(size: self.size, lvl: level)
+        //let skView = self.view as SKView!
+        
+
+        view!.ignoresSiblingOrder = true
+        scene.scaleMode = .aspectFill
+        
+        //scene.size = (view!.bounds.size)
+
+        view!.presentScene(scene)
     }
 }

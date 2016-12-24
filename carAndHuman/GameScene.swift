@@ -145,7 +145,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         self.addChild(bgGameSound)
         
         btnMenu.scale(to: CGSize(width: 60, height: 60))
-        btnMenu.position = CGPoint(x: -320, y: 200)
+        //btnMenu.position = CGPoint(x: -320, y: 200)
         cam.addChild(btnMenu)
         
     }
@@ -276,7 +276,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     func backMenu(){
-        let menuScene = MenuScene(size: self.size)
+        /*let menuScene = MenuScene(size: self.size)
         // Configure the view.
         view!.showsFPS = true
         view!.showsNodeCount = true
@@ -289,7 +289,15 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         //scene.setLevel(levelName: level)
         
-        view!.presentScene(menuScene)
+        view!.presentScene(menuScene)*/
+        
+        
+        let scene = MenuScene(size: self.size)
+        let skView = self.view as SKView!
+        skView?.ignoresSiblingOrder = true
+        scene.scaleMode = .aspectFill
+        scene.size = (skView?.bounds.size)!
+        skView?.presentScene(scene)
     }
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -305,7 +313,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         let skView = self.view as SKView!
         skView?.ignoresSiblingOrder = true
         scene.scaleMode = .aspectFill
-        //scene.size = (skView?.bounds.size)!
+        scene.size = (skView?.bounds.size)!
         skView?.presentScene(scene)
     }
     
